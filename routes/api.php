@@ -18,6 +18,14 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function () {
     // middleware guest group
     Route::middleware('guest')->group(function () {
-        Route::post('register', 'register'); 
+        Route::post('login', 'login');
+        Route::post('register', 'register');
+        Route::post('forgot-password', 'forgotPassword')->name('password.email');
+        Route::post('reset-password', 'resetPassword')->name('password.update');
+        Route::get('reset-password/{token}', function (string $token) {
+            return $token;
+        })->middleware('guest')->name('password.reset');   
     });
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
 });
