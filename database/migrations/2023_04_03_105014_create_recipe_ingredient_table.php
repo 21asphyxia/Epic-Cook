@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('recipe_ingredient', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image')->default('default.jpg');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->integer('quantity')->nullable(false);
+            $table->string('unit')->nullable(false);
+            $table->integer('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('ingredient_id')->constrained('ingredients')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('recipe_ingredients');
     }
 };
