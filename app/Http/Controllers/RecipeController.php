@@ -15,7 +15,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::all()->load('ingredients', 'instructions','ratings', 'images', 'comments', 'user');
+        $recipes = Recipe::with('ingredients', 'instructions','ratings', 'images', 'comments', 'user')->get();
         return response()->json($recipes);
     }
 
@@ -48,7 +48,13 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        return response()->json($recipe);
+        return response()->json($recipe->load('ingredients', 'instructions','ratings', 'images', 'comments', 'user'));
+    }
+
+    public function getRecipesByDifficulty($difficulty)
+    {
+        $recipes = Recipe::where('difficulty', $difficulty)->get()->load('ingredients', 'instructions','ratings', 'images', 'comments', 'user');
+        return response()->json($recipes);
     }
 
     /**

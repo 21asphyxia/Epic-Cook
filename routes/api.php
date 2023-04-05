@@ -33,9 +33,12 @@ Route::controller(AuthController::class)->group(function () {
 
 // Recipes
 Route::controller(RecipeController::class)->group(function () {
-    Route::get('recipes', 'index');
-    Route::get('recipes/{recipe}', 'show');
-    Route::post('recipes', 'store');
-    Route::put('recipes/{recipe}', 'update');
-    Route::delete('recipes/{recipe}', 'destroy');
+    Route::prefix('recipes')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{recipe}', 'show');
+        Route::get('/difficulty/{difficulty}', 'getRecipesByDifficulty');
+        Route::post('/', 'store');
+        Route::put('/{recipe}', 'update');
+        Route::delete('/{recipe}', 'destroy');
+    });
 });
