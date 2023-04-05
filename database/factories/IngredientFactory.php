@@ -18,7 +18,6 @@ class IngredientFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'description' => $this->faker->text,
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];

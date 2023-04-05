@@ -17,7 +17,11 @@ class RatingFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "rating_number" => $this->faker->numberBetween(1, 5),
+            // "recipe_id" => $this->faker->numberBetween(1, 10),
+            "user_id" => $this->faker->numberBetween(1, 10),
+            "created_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
+            "updated_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

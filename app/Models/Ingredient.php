@@ -15,6 +15,8 @@ class Ingredient extends Model
 
     public function recipes()
     {
-        return $this->belongsToMany(Recipe::class, 'recipe_ingredients');
+        return $this->belongsToMany(Recipe::class)
+            ->using(IngredientRecipe::class)
+            ->withPivot('amount', 'unit');
     }
 }
