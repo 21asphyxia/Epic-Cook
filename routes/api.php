@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RecipeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,16 @@ Route::controller(AuthController::class)->group(function () {
     });
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+});
+
+// Recipes
+Route::controller(RecipeController::class)->group(function () {
+    Route::prefix('recipes')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{recipe}', 'show');
+        Route::get('/difficulty/{difficulty}', 'getRecipesByDifficulty');
+        Route::post('/', 'store');
+        Route::put('/{recipe}', 'update');
+        Route::delete('/{recipe}', 'destroy');
+    });
 });

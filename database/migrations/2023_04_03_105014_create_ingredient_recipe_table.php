@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recipe_ingredient', function (Blueprint $table) {
+        Schema::create('ingredient_recipe', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity')->nullable(false);
-            $table->string('unit')->nullable(false);
+            $table->integer('amount')->nullable(false);
+            $table->enum('unit', ['mg', 'g', 'kg', 'ml', 'l', 'tsp', 'piece', 'other'])->nullable(false);
             $table->integer('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('ingredient_id')->constrained('ingredients')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
