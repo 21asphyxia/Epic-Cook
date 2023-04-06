@@ -31,6 +31,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
+Route::controller(UserController::class)->group(function () {
+    Route::post('profile', 'updateProfile')->middleware('auth:api');
+});
+
 // Recipes
 Route::controller(RecipeController::class)->group(function () {
     Route::prefix('recipes')->group(function () {
