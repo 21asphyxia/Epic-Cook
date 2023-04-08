@@ -3,90 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-        $credentials = $request->only('email', 'password');
+    public function getLogin() {
+        return view('auth.login');
+    }
 
-        $token = Auth::attempt($credentials);
-        if (!$token) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
+    public function getRegister() {
+        return view('auth.register');
+    }
+
+    public function login(LoginRequest $request) {
+        if (Auth::attempt($request->only('email', 'password'))) {
+            
+            Auth::login(Auth::user(), $request->remember_me);
+            $request->session()->regenerate();
+ 
+            return redirect()->intended('dashboard');
         }
-
-        $user = Auth::user();
-        return response()->json([
-            'status' => 'success',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
         ]);
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
+    public function register(RegisterRequest $request) {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-        $token = Auth::login($user);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
     }
 
-    public function logout()
-    {
+    public function logout(Request $request) {
         Auth::logout();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
-        ]);
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
-    public function refresh()
-    {
-        return response()->json([
-            'status' => 'success',
-            'user' => Auth::user(),
-            'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ]);
-    }
-
-    public function forgotPassword(Request $request)
-    {
+    public function forgotPassword(Request $request) {
         $request->validate([
             'email' => 'required|string|email',
         ]);
@@ -110,8 +76,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function resetPassword(Request $request)
-    {
+    public function resetPassword(Request $request) {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
