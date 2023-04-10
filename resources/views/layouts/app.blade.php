@@ -1,16 +1,15 @@
 @include('includes.appHead')
 </head>
 <body>
-    <header>
-    @yield('nav')
+    <header class="header-area">
+        @include('components.appNav')
     </header>
     <main @if (!Request::is('login') &&!Request::is('register')) class="container mt-5" @endif>
-    @yield('content')
-    @yield('login or register')
+        @yield('content')
     </main>
     <footer>
-    @yield('footer')
+        @yield('footer')
     </footer>
-    @yield('scripts')
+    @include('includes.appScripts')
 </body>
 </html>

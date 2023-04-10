@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('login or register')
+@section('content')
 
     <section class="font-sans text-gray-900 antialiased">
         <div class="bg-[#F4F7FF] flex items-center py-20 lg:py-[120px] h-screen">
