@@ -5,7 +5,7 @@ use App\Http\Controllers\RecipeController;
 
 Route::get('/', function () {
     return view('pages.dashboard');
-});
+})->name('admin.dashboard');
 
 // Recipes
 Route::controller(RecipeController::class)->group(function () {
