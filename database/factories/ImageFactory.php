@@ -18,7 +18,6 @@ class ImageFactory extends Factory
     {
         return [
             "path" => $this->faker->imageUrl(640, 480, 'food', true),
-            // "recipe_id" => $this->faker->numberBetween(1, 10),
             "created_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
             "updated_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];

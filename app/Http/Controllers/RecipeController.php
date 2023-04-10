@@ -15,8 +15,8 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::with('ingredients', 'instructions','ratings', 'images', 'comments', 'user')->get();
-        return response()->json($recipes);
+        $recipes = Recipe::with('ratings', 'comments', 'user')->paginate(5);
+        return view('pages.recipes.index', ['recipes' => $recipes]);
     }
 
     /**
@@ -88,6 +88,8 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
-        //
+        $recipe->delete();
+
+        return redirect()->back()->with('success', 'Recipe deleted successfully');
     }
 }
