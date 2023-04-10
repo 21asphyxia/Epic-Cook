@@ -392,6 +392,13 @@
     /* Toggle Sidebar Button */
     /* Search Bar */
   }
+
+  .unstyled {
+    /* button */
+    border: none;
+    background: none;
+    
+  }
   
   .header .toggle-sidebar-btn {
     font-size: 32px;
@@ -945,14 +952,6 @@
     border: 0;
   }
   
-  .dashboard .recent-sales .dataTable-top {
-    padding: 0 0 10px 0;
-  }
-  
-  .dashboard .recent-sales .dataTable-bottom {
-    padding: 10px 0 0 0;
-  }
-  
   /* Top Selling */
   .dashboard .top-selling {
     font-size: 14px;
@@ -1257,5 +1256,10 @@
     padding-top: 5px;
     text-align: center;
     font-size: 13px;
+    color: #012970;
+  }
+
+  .table thead tr td {
+    font-weight: 600;
     color: #012970;
   }
