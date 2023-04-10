@@ -2,11 +2,11 @@
 
 
 <body>
-    @yield('nav')
-    @yield('sidebar')
-    <main class="container mt-5">
+    @include('components.nav', ['user' => auth()->user()->name ])
+    @include('components.sidebar')
+    <main id="main" class="main">
         @yield('content')
     </main>
-    @yield('scripts')
+    @include('includes.adminScripts')
 </body>
 </html>

@@ -15,8 +15,8 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::with('ingredients', 'instructions','ratings', 'images', 'comments', 'user')->get();
-        return response()->json($recipes);
+        $recipes = Recipe::with('ratings', 'comments', 'user')->get();
+        return view('pages.recipes.index', compact('recipes'));
     }
 
     /**
