@@ -16,7 +16,7 @@ use App\Models\Recipe;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ['recipes' => Recipe::with('ratings', 'comments', 'user')->limit(4)->get()]);
 });
 
 Route::controller(UserController::class)->group(function () {
