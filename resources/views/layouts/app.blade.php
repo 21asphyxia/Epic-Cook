@@ -2,7 +2,7 @@
 </head>
 <body>
     <header class="header-area">
-        @include('components.appNav')
+        <x-appNav :user="auth()->user()->name ?? 'Guest'" />
     </header>
     <main @if (!Request::is('login') &&!Request::is('register')) class="container mt-5" @endif>
         @yield('content')

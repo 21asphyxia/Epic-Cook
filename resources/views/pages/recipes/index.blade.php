@@ -24,7 +24,6 @@
                         <td class="text-center"></td>
                     </tr>
                 </thead>
-
                 <tbody>
                     @foreach ($recipes as $recipe)
                         <tr>

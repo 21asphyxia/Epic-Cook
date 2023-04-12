@@ -26,16 +26,16 @@
         </defs>
     </svg>
     {{-- recently added recipes --}}
-    <section>
+    <section class="mx-3">
         <h1>Recently added recipes</h1>
-        <div class="d-flex justify-content-between flex-wrap gap-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
             @foreach ($recipes as $recipe)
-            <a href="{{ route('recipes.show', $recipe) }}">
-                <div class="card" style="width: 18rem">
+            <a class="col" href="{{ route('recipes.show', $recipe) }}">
+                <div class="card">
                     <img class="card-img-top" src="{{ asset('img/card.jpg') }}" alt="recipe image">
                     <div class="card-body">
-                        <h3>{{ $recipe->name }}</h3>
-                        <p>{{ Str::limit($recipe->description, 50, '...') }}</p>
+                        <h3 class="text-truncate">{{ $recipe->name }}</h3>
+                        <p>{{ Str::limit($recipe->description, 85, '...') }}</p>
                         <div>
                             @php
                                 $ratings = $recipe->ratings->pluck('rating_number')->toArray();

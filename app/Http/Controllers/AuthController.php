@@ -27,7 +27,7 @@ class AuthController extends Controller
             Auth::login(Auth::user(), $request->remember_me);
             $request->session()->regenerate();
  
-            return redirect()->intended('dashboard');
+            return redirect()->intended('/');
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -35,11 +35,13 @@ class AuthController extends Controller
     }
 
     public function register(RegisterRequest $request) {
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        return redirect()->route('login.page');
     }
 
     public function logout(Request $request) {
@@ -49,7 +51,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->back();
     }
 
     public function forgotPassword(Request $request) {

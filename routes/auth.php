@@ -16,5 +16,5 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('forgot-password', 'forgotPassword')->name('password.email');
         Route::post('reset-password', 'resetPassword')->name('password.update');
     });
-    Route::post('logout', 'logout');
+    Route::get('logout', 'logout')->name('logout');
 });
