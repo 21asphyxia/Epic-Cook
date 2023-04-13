@@ -8,7 +8,7 @@
         @yield('content')
     </main>
     <footer>
-        @yield('footer')
+        <x-appFooter />
     </footer>
     @include('includes.appScripts')
 </body>

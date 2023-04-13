@@ -19,6 +19,20 @@ class RecipeController extends Controller
         return view('pages.recipes.index', ['recipes' => $recipes]);
     }
 
+    public function recentlyPopular()
+    {
+        $recently = Recipe::with('ratings', 'comments', 'user')->orderBy('created_at', 'desc')->take(4)->get();
+        // order by number of ratings in the relationship
+        $popular = Recipe::with('ratings', 'comments', 'user')->withCount('ratings')->orderBy('ratings_count', 'desc')->take(4)->get();
+        return view('welcome', ['recently' => $recently, 'popular' => $popular]);
+    }
+
+    public function showRecipe(Recipe $recipe)
+    {
+        $recipe = $recipe->load('ingredients', 'instructions','ratings', 'images', 'comments', 'user');
+        return view('pages.recipes.show', ['recipe' => $recipe]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
