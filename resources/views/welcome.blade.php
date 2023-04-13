@@ -29,18 +29,63 @@
     <section class="mx-3">
         <h1>Recently added recipes</h1>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
-            @foreach ($recipes as $recipe)
-            <a class="col" href="{{ route('recipes.show', $recipe) }}">
+            @foreach ($recently as $recipe)
+            <a class="col" href="{{ route('app.recipes.show', $recipe) }}">
                 <div class="card">
                     <img class="card-img-top" src="{{ asset('img/card.jpg') }}" alt="recipe image">
                     <div class="card-body">
                         <h3 class="text-truncate">{{ $recipe->name }}</h3>
-                        <p>{{ Str::limit($recipe->description, 85, '...') }}</p>
+                        <p class="multiline-truncate-2">{{ Str::limit($recipe->description, 100, '...') }}</p>
                         <div>
                             @php
                                 $ratings = $recipe->ratings->pluck('rating_number')->toArray();
-                                $average = array_sum($ratings) / count($ratings);
-                                echo "(" . $average . ")";
+                                $average = round(array_sum($ratings) / count($ratings), 1);
+                            @endphp
+                                <span class="fs-7 lh-1 align-middle">{{ $average.' ('.count($recipe->ratings).')'}}</span>
+                            @php
+                                $half = $average - floor($average);
+                                if ($half >= 0.4) {
+                                    $half = 1;
+                                } else {
+                                    $half = 0;
+                                }
+                                $full = floor($average);
+                                $empty = round(5 - $full - $half);
+                                for ($i = 0; $i < $full; $i++) {
+                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
+                                }
+                                if ($half) {
+                                    echo '<svg class="icon icon-star-half"><use xlink:href="#icon-star-half"></use></svg>';
+                                }
+                                for ($i = 0; $i < $empty; $i++) {
+                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star-empty"></use></svg>';
+                                }
+                            @endphp
+                        </div>
+                    </div>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </section>
+<hr>
+    <section class="mx-3">
+        <h1>Most popular recipes</h1>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+            @foreach ($popular as $recipe)
+            <a class="col" href="{{ route('app.recipes.show', $recipe) }}">
+                <div class="card">
+                    <img class="card-img-top" src="{{ asset('img/card.jpg') }}" alt="recipe image">
+                    <div class="card-body">
+                        <h3 class="text-truncate">{{ $recipe->name }}</h3>
+                        <p class="multiline-truncate-2">{{ Str::limit($recipe->description, 100, '...') }}</p>
+                        <div>
+                            @php
+                                $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                                $average = round(array_sum($ratings) / count($ratings), 1);
+                            @endphp
+                                <span class="fs-7 lh-1 align-middle">{{ $average.' ('.count($recipe->ratings).')'}}</span>
+                            @php
                                 $half = $average - floor($average);
                                 if ($half >= 0.4) {
                                     $half = 1;

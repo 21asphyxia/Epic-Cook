@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route; 
 use App\Http\Controllers\UserController;
 use App\Models\Recipe;
@@ -15,9 +16,7 @@ use App\Models\Recipe;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome', ['recipes' => Recipe::with('ratings', 'comments', 'user')->limit(4)->get()]);
-});
+Route::get('/', [RecipeController::class, 'recentlyPopular'])->name('landing.page');
 
 Route::controller(UserController::class)->group(function () {
     Route::post('profile', 'updateProfile')->middleware('auth:api');
@@ -26,7 +25,7 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(RecipeController::class)->group(function () {
     Route::prefix('recipes')->group(function () {
         Route::get('/', 'index')->name('app.recipes');
-        Route::get('/{recipe}', 'show')->name('recipes.show');
+        Route::get('/{recipe}', 'showRecipe')->name('app.recipes.show');
         Route::get('/difficulty/{difficulty}', 'getRecipesByDifficulty')->name('recipes.difficulty');
         Route::post('/', 'store')->name('recipes.store');
         Route::put('/{recipe}', 'update')->name('recipes.update');
