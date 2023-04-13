@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @yield('additionalCSS')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     {{-- <script defer src="https://cdn.tailwindcss.com"></script> --}}
 </head>
