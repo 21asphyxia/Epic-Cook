@@ -7,13 +7,9 @@ body {
     background-color: #f5f3f0;
 }
 
-li {
-    /* display: inline; */
+ul {
     margin: 0;
     padding: 0;
-}
-
-li {
     text-decoration: none;
     list-style: none;
 }
@@ -180,4 +176,13 @@ nav > div {
 }
 .recipe-detail .recipe-info li p {
     line-height: 24px;
+}
+
+
+.ingredients-list{
+    list-style: disc outside;
+}
+
+.ingredients-li::marker {
+    color: #ffce34;
 }

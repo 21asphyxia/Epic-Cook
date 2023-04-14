@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('instructions', function (Blueprint $table) {
             $table->id();
-            $table->string('step')->nullable(false);
+            $table->integer('step')->nullable(false)->default(1);
             $table->string('description')->nullable(false);
             $table->integer('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
