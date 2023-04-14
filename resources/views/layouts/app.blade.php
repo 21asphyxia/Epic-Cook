@@ -4,7 +4,7 @@
     <header class="header-area">
         <x-appNav :user="auth()->user()->name ?? 'Guest'" />
     </header>
-    <main @if (!Request::is('login') &&!Request::is('register')) class="container mt-5" @endif>
+    <main class="container @if (!Request::is('login') &&!Request::is('register'))mt-4" @endif>
         @yield('content')
     </main>
     <footer>

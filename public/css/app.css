@@ -7,13 +7,9 @@ body {
     background-color: #f5f3f0;
 }
 
-li {
-    display: inline;
+ul {
     margin: 0;
     padding: 0;
-}
-
-li {
     text-decoration: none;
     list-style: none;
 }
@@ -24,7 +20,7 @@ a {
     width: unset;
 }
 
-header {
+header,footer {
     background-color: #ffce34;
 }
 
@@ -130,4 +126,63 @@ nav > div {
 
 .dropdown-menu {
     left: unset!important;
+}
+
+.fs-7 {
+    font-size: 1rem;
+}
+
+/* breakpoints for fs-7 */
+/* min width and max width */
+
+@media only screen and (min-width: 992px) and (max-width: 1023.98px) {
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .fs-7 {
+        font-size: 1rem;
+    }
+}
+
+.multiline-truncate-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;  
+}
+
+.multiline-truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+}
+
+.inner-column {
+    padding: 30px;
+    box-shadow: 3px 4px 15px #00000026;
+    border-radius: 10px;
+}
+
+.recipe-detail .recipe-info {
+    padding: 0;
+}
+
+.recipe-detail .recipe-info li .icon {
+    font-size: 18px;
+    color: #ffce34;
+}
+.recipe-detail .recipe-info li p {
+    line-height: 24px;
+}
+
+
+.ingredients-list{
+    list-style: disc outside;
+}
+
+.ingredients-li::marker {
+    color: #ffce34;
 }
