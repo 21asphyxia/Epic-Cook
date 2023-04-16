@@ -49,105 +49,119 @@
             </symbol>
         </defs>
     </svg>
-    <section class="recipe-detail">
-        <div class="row justify-content-between">
-            <div class="text-column col-lg-8 col-md-12 col-sm-12">
-                <div class="">
-                    <!-- Upper Box -->
-                    <div class="upper-box">
-                        <div class="owl-carousel owl-theme">
-                            <figure class="image"><img src="{{ asset('img/card.jpg') }}" alt=""></figure>
-                        </div>
-                    </div>
-                    <h1>{{ $recipe->name }}</h1>
-                    <div class="inner-column mb-4">
-                        <h3 class="ps-3">List of ingredients :</h3>
-                        <hr>
-                        <ul class="ingredients-list ps-3">
-                            @foreach ($recipe->ingredients as $ingredient)
-                                <li class="ingredients-li">
-                                    <strong>{{ $ingredient->pivot->amount . $ingredient->pivot->unit }}</strong> of
-                                    {{ $ingredient->name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="inner-column">
-                        <h3 class="ps-3">Steps :</h3>
-                        <hr>
-                        <ul class="ingredients-list ps-3">
-                            @foreach ($recipe->instructions as $instruction)
-                                <li class="ingredients-li">
-                                    <span>{{ $instruction->step.". ".$instruction->description }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+    <section class="recipe-detail row justify-content-between">
+        <div class="text-column col-lg-8 col-md-12 col-sm-12">
+            <!-- Upper Box -->
+            <div class="upper-box">
+                <div class="owl-carousel owl-theme">
+                    <figure class="image"><img src="{{ asset('img/card.jpg') }}" alt=""></figure>
                 </div>
             </div>
+            <div class="inner-column mb-4">
+                <h3 class="ps-3">List of ingredients :</h3>
+                <hr>
+                <ul class="ingredients-list ps-3">
+                    @foreach ($recipe->ingredients as $ingredient)
+                        <li class="ingredients-li">
+                            <strong>{{ $ingredient->pivot->amount . $ingredient->pivot->unit }}</strong> of
+                            {{ $ingredient->name }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="inner-column">
+                <h3 class="ps-3">Steps :</h3>
+                <hr>
+                <ul class="ingredients-list ps-3">
+                    @foreach ($recipe->instructions as $instruction)
+                        <li class="ingredients-li">
+                            <span>{{ $instruction->step.". ".$instruction->description }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        <div class="info-column col-lg-4 col-md-12 col-sm-12">
+            <div class="inner-column">
+                <h2>{{ $recipe->name }}</h2>
+                <p>{{ $recipe->description }}</p>
+                <ul class="recipe-info">
+                    <li>
+                        <span class="icon fa fa-user"></span>
+                        <strong>Author</strong>
+                        <p class="ps-3">{{ $recipe->user->name }}</p>
+                    </li>
+                    <li>
+                        <span class="icon fa fa-clock"></span>
+                        <strong>Preparation Time</strong>
+                        <p class="ps-3">{{ $recipe->prep_time . ' minutes' }}</p>
+                    </li>
+                    <li>
+                        <span class="icon bi bi-speedometer"></span>
+                        <strong>Difficulty</strong>
+                        <div class="ps-3">
+                        @php               
+                            $full = $recipe->difficulty;
+                            $empty = 5 - $full;
+                            for ($i = 0; $i < $full; $i++) {
+                                echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
+                            }
+                            for ($i = 0; $i < $empty; $i++) {
+                                echo '<svg class="icon icon-star-empty"><use xlink:href="#icon-star-empty"></use></svg>';
+                            }
+                        @endphp
+                        </div>
+                    </li>
+                    <hr>
+                    <li>
+                        <strong>Ratings :</strong>
+                        <div class="">
+                        @php
+                            $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                            $average = round(array_sum($ratings) / count($ratings), 1);
+                        @endphp
+                            <span class="fs-7 lh-1 align-middle">{{ $average.' ('.count($recipe->ratings).')'}}</span>
+                        @php
+                            $half = $average - floor($average);
+                            if ($half >= 0.4) {
+                                $half = 1;
+                            } else {
+                                $half = 0;
+                            }
+                            $full = floor($average);
+                            $empty = round(5 - $full - $half);
+                            for ($i = 0; $i < $full; $i++) {
+                                echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
+                            }
+                            if ($half) {
+                                echo '<svg class="icon icon-star-half"><use xlink:href="#icon-star-half"></use></svg>';
+                            }
+                            for ($i = 0; $i < $empty; $i++) {
+                                echo '<svg class="icon icon-star"><use xlink:href="#icon-star-empty"></use></svg>';
+                            }
+                        @endphp
+                    </li>
+                </ul>
+            </div>
 
-            <div class="info-column col-lg-4 col-md-12 col-sm-12">
-                <div class="inner-column">
-                    <h2>{{ $recipe->name }}</h2>
-                    <p>{{ $recipe->description }}</p>
-                    <ul class="recipe-info">
-                        <li>
-                            <span class="icon fa fa-user"></span>
-                            <strong>Author</strong>
-                            <p class="ps-3">{{ $recipe->user->name }}</p>
-                        </li>
-                        <li>
-                            <span class="icon fa fa-clock"></span>
-                            <strong>Preparation Time</strong>
-                            <p class="ps-3">{{ $recipe->prep_time . ' minutes' }}</p>
-                        </li>
-                        <li>
-                            <span class="icon bi bi-speedometer"></span>
-                            <strong>Difficulty</strong>
-                            <div class="ps-3">
-                            @php               
-                                $full = $recipe->difficulty;
-                                $empty = 5 - $full;
-                                for ($i = 0; $i < $full; $i++) {
-                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
-                                }
-                                for ($i = 0; $i < $empty; $i++) {
-                                    echo '<svg class="icon icon-star-empty"><use xlink:href="#icon-star-empty"></use></svg>';
-                                }
-                            @endphp
+        </div>
+        <div class="mt-4">
+            <div class="inner-column">
+                <h3>Comments :</h3>
+                <hr>
+                <div class="comments">
+                    @foreach ($recipe->comments as $comment)
+                        <div class="comment">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <strong>{{ $comment->user->name }}</strong>
+                                    <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
+                                </div>
                             </div>
-                        </li>
-                        <hr>
-                        <li>
-                            <strong>Ratings :</strong>
-                            <div class="">
-                            @php
-                                $ratings = $recipe->ratings->pluck('rating_number')->toArray();
-                                $average = round(array_sum($ratings) / count($ratings), 1);
-                            @endphp
-                                <span class="fs-7 lh-1 align-middle">{{ $average.' ('.count($recipe->ratings).')'}}</span>
-                            @php
-                                $half = $average - floor($average);
-                                if ($half >= 0.4) {
-                                    $half = 1;
-                                } else {
-                                    $half = 0;
-                                }
-                                $full = floor($average);
-                                $empty = round(5 - $full - $half);
-                                for ($i = 0; $i < $full; $i++) {
-                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
-                                }
-                                if ($half) {
-                                    echo '<svg class="icon icon-star-half"><use xlink:href="#icon-star-half"></use></svg>';
-                                }
-                                for ($i = 0; $i < $empty; $i++) {
-                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star-empty"></use></svg>';
-                                }
-                            @endphp
-                        </li>
-                    </ul>
-                </div>
-
+                            <div class="comment-body">
+                                <p>{{ $comment->content }}</p>
+                            </div>
+                        </div>
+                    @endforeach 
             </div>
         </div>
     </section>
