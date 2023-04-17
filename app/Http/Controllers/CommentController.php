@@ -38,7 +38,7 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request, Recipe $recipe)
     {
         $comment = Comment::make($request->validated());
-        dd($comment);
+        // dd($comment);
         $comment->user()->associate(auth()->user());
         $recipe->comments()->save($comment);
         return redirect()->back()->with('success', __('Comment added successfully'));
@@ -55,16 +55,6 @@ class CommentController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -75,7 +65,8 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        $comment->update($request->validated());
+        return redirect()->back()->with('success', __('Comment updated successfully'));
     }
 
     /**
@@ -86,6 +77,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return redirect()->back()->with('success', __('Comment deleted successfully'));
     }
 }

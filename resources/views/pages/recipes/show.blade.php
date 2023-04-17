@@ -20,6 +20,27 @@
                 nav: true,
             });
         });
+
+        let editButtons = document.querySelectorAll('.edit-comment');
+        editButtons.forEach((button) => {
+
+            button.addEventListener('click', (e) => {
+                console.log(e.target.parentElement.parentElement.parentElement.parentElement.querySelector(
+                    '.comment-text'));
+                let commentId = e.target.dataset.commentId;
+                let commentText = e.target.parentElement.parentElement.parentElement.parentElement
+                    .querySelector('.comment-text');
+                let commentInput = document.querySelector(`#comment-input-${commentId}`);
+                let form = `
+                    <form action='/comments/${commentId}' method="POST" class="d-flex mb-2">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" name="content" class="form-control me-2" value = "${commentText.innerText}">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                `;
+                commentText.innerHTML = form;
+            });
+        });
     </script>
 @endsection
 
@@ -153,14 +174,15 @@
                 @endphp
                 @if ($ratingNumber == 0)
                     <form action="{{ route('recipe.rate.store', $recipe) }}" method="POST">
-                        @else
+                    @else
                         <form action="{{ route('recipe.rate.update', $rating) }}" method="POST">
                             @method('PUT')
                 @endif
                 @csrf
                 <div class="d-flex justify-content-center">
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-1" value="1" @if ($ratingNumber == 1) checked @endif>
+                        <input type="radio" name="rating" id="rating-1" value="1"
+                            @if ($ratingNumber == 1) checked @endif>
                         <label for="rating-1" class="d-block">
                             <svg class="icon icon-star">
                                 <use xlink:href="#icon-star"></use>
@@ -168,7 +190,8 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-2" value="2" @if ($ratingNumber == 2) checked @endif>
+                        <input type="radio" name="rating" id="rating-2" value="2"
+                            @if ($ratingNumber == 2) checked @endif>
                         <label for="rating-2" class="d-block">
                             <svg class="icon icon-star">
                                 <use xlink:href="#icon-star"></use>
@@ -176,7 +199,8 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-3" value="3" @if ($ratingNumber == 3) checked @endif>
+                        <input type="radio" name="rating" id="rating-3" value="3"
+                            @if ($ratingNumber == 3) checked @endif>
                         <label for="rating-3" class="d-block">
                             <svg class="icon icon-star">
                                 <use xlink:href="#icon-star"></use>
@@ -184,7 +208,8 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-4" value="4" @if ($ratingNumber == 4) checked @endif>
+                        <input type="radio" name="rating" id="rating-4" value="4"
+                            @if ($ratingNumber == 4) checked @endif>
                         <label for="rating-4" class="d-block">
                             <svg class="icon icon-star">
                                 <use xlink:href="#icon-star"></use>
@@ -192,7 +217,8 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-5" value="5" @if ($ratingNumber == 5) checked @endif>
+                        <input type="radio" name="rating" id="rating-5" value="5"
+                            @if ($ratingNumber == 5) checked @endif>
                         <label for="rating-5" class="d-block">
                             <svg class="icon icon-star">
                                 <use xlink:href="#icon-star"></use>
@@ -213,30 +239,80 @@
                 @endif
                 <h3>Comments :</h3>
                 <hr>
-                <div class="comments row flex-column gy-1 mb-3">
+                <div class="row flex-column gy-1 mb-3">
                     @foreach ($comments as $comment)
-                        <div class="comment border border-primary rounded">
+                        @php
+                            $editable = false;
+                            if (Auth::id() == $comment->user_id) {
+                                $editable = true;
+                            }
+                        @endphp
+                        <div
+                            class="comment border border-primary rounded @if ($editable) d-flex justify-content-between pe-0 @endif">
+                            @if ($editable)
+                                <div>
+                            @endif
                             <div class="comment-header ps-1">
                                 <div class="comment-author">
                                     <strong>{{ $comment->user->name }}</strong>
-                                    <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
+                                    <span
+                                        class="comment-date text-secondary d-none d-sm-inline">{{ $comment->created_at->toDayDateTimeString() }}
+                                        @if($comment->updated_at > $comment->created_at)
+                                        <span>
+                                            (edited : {{ $comment->updated_at->diffForHumans()}})
+                                        </span>
+                                        @endif
+                                    </span>
+
+                                    <span
+                                        class="comment-date text-secondary d-inline d-sm-none">{{ $comment->created_at->diffForHumans() }}
+                                        @if($comment->updated_at > $comment->created_at)
+                                        <span>
+                                            (edited)
+                                        </span>
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                             <div class="comment-body">
-                                <p class="ps-3">{{ $comment->content }}</p>
+                                <p class="comment-text ps-3 m-0">{{ $comment->content }}</p>
                             </div>
+                            @if ($editable)
                         </div>
-                    @endforeach
+                    @endif
+                    @if ($editable)
+                        <div class="dropdown border-start border-primary pt-1 px-2">
+                            <button class="border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <button class="dropdown-item edit-comment"
+                                        data-comment-id="{{ $comment->id }}">Edit</button>
+                                </li>
+                                <li>
+                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @endif
                 </div>
-                {{ $comments->links() }}
-                <hr>
-                <form class="d-flex flex-wrap flex-md-nowrap justify-content-md-between justify-content-end"
-                    action="{{ route('comments.store', $recipe) }}" method="POST">
-                    @csrf
-                    <input class="form-control mb-2 mb-md-0 me-0 me-md-2" type="text" name="content"
-                        placeholder="Enter a comment" value="">
-                    <button class="btn btn-primary justify-self-end" type="submit">Send</button>
-                </form>
+                @endforeach
             </div>
+            {{ $comments->links() }}
+            <hr>
+            <form class="d-flex flex-wrap flex-md-nowrap justify-content-md-between justify-content-end"
+                action="{{ route('comments.store', $recipe) }}" method="POST">
+                @csrf
+                <input class="form-control mb-2 mb-md-0 me-0 me-md-2" type="text" name="content"
+                    placeholder="Enter a comment" value="">
+                <button class="btn btn-primary justify-self-end" type="submit">Send</button>
+            </form>
+        </div>
     </section>
 @endsection
