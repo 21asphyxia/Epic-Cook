@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Recipe;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
@@ -34,9 +35,13 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Recipe $recipe)
     {
-        //
+        $comment = Comment::make($request->validated());
+        dd($comment);
+        $comment->user()->associate(auth()->user());
+        $recipe->comments()->save($comment);
+        return redirect()->back()->with('success', __('Comment added successfully'));
     }
 
     /**

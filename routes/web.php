@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route; 
 use App\Http\Controllers\UserController;
-use App\Models\Recipe;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use App\Models\Recipe;
 |
 */
 
-Route::get('/', [RecipeController::class, 'recentlyPopular'])->name('landing.page');
+Route::get('/', [RecipeController::class, 'recentlyPopular'])->name('app.home');
 
 Route::controller(UserController::class)->group(function () {
     Route::post('profile', 'updateProfile')->middleware('auth:api');
@@ -30,5 +31,20 @@ Route::controller(RecipeController::class)->group(function () {
         Route::post('/', 'store')->name('recipes.store');
         Route::put('/{recipe}', 'update')->name('recipes.update');
         Route::delete('/{recipe}', 'destroy')->name('recipes.destroy');
+    });
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::prefix('comments')->group(function () {
+        Route::post('/{recipe}', 'store')->name('comments.store');
+        Route::put('/{comment}', 'update')->name('comments.update');
+        Route::delete('/{comment}', 'destroy')->name('comments.destroy');
+    });
+});
+
+Route::controller(RatingController::class)->group(function () {
+    Route::prefix('ratings')->group(function () {
+        Route::post('/{recipe}', 'store')->name('recipe.rate.store');
+        Route::put('/{rating}', 'update')->name('recipe.rate.update');
     });
 });

@@ -50,7 +50,7 @@
         </defs>
     </svg>
     <section class="recipe-detail row justify-content-between">
-        <div class="text-column col-lg-8 col-md-12 col-sm-12">
+        <div class="text-column col-md-8 col-12 order-md-1 order-1">
             <!-- Upper Box -->
             <div class="upper-box">
                 <div class="owl-carousel owl-theme">
@@ -64,24 +64,25 @@
                     @foreach ($recipe->ingredients as $ingredient)
                         <li class="ingredients-li">
                             <strong>{{ $ingredient->pivot->amount . $ingredient->pivot->unit }}</strong> of
-                            {{ $ingredient->name }}</li>
+                            {{ $ingredient->name }}
+                        </li>
                     @endforeach
                 </ul>
             </div>
-            <div class="inner-column">
+            <div class="inner-column mb-4">
                 <h3 class="ps-3">Steps :</h3>
                 <hr>
                 <ul class="ingredients-list ps-3">
                     @foreach ($recipe->instructions as $instruction)
                         <li class="ingredients-li">
-                            <span>{{ $instruction->step.". ".$instruction->description }}</span>
+                            <span>{{ $instruction->step . '. ' . $instruction->description }}</span>
                         </li>
                     @endforeach
                 </ul>
             </div>
         </div>
-        <div class="info-column col-lg-4 col-md-12 col-sm-12">
-            <div class="inner-column">
+        <div class="info-column col-md-4 col-12 order-md-2 order-3 ">
+            <div class="inner-column mb-4">
                 <h2>{{ $recipe->name }}</h2>
                 <p>{{ $recipe->description }}</p>
                 <ul class="recipe-info">
@@ -99,70 +100,143 @@
                         <span class="icon bi bi-speedometer"></span>
                         <strong>Difficulty</strong>
                         <div class="ps-3">
-                        @php               
-                            $full = $recipe->difficulty;
-                            $empty = 5 - $full;
-                            for ($i = 0; $i < $full; $i++) {
-                                echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
-                            }
-                            for ($i = 0; $i < $empty; $i++) {
-                                echo '<svg class="icon icon-star-empty"><use xlink:href="#icon-star-empty"></use></svg>';
-                            }
-                        @endphp
+                            @php
+                                $full = $recipe->difficulty;
+                                $empty = 5 - $full;
+                                for ($i = 0; $i < $full; $i++) {
+                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
+                                }
+                                for ($i = 0; $i < $empty; $i++) {
+                                    echo '<svg class="icon icon-star-empty"><use xlink:href="#icon-star-empty"></use></svg>';
+                                }
+                            @endphp
                         </div>
                     </li>
                     <hr>
                     <li>
                         <strong>Ratings :</strong>
                         <div class="">
-                        @php
-                            $ratings = $recipe->ratings->pluck('rating_number')->toArray();
-                            $average = round(array_sum($ratings) / count($ratings), 1);
-                        @endphp
-                            <span class="fs-7 lh-1 align-middle">{{ $average.' ('.count($recipe->ratings).')'}}</span>
-                        @php
-                            $half = $average - floor($average);
-                            if ($half >= 0.4) {
-                                $half = 1;
-                            } else {
-                                $half = 0;
-                            }
-                            $full = floor($average);
-                            $empty = round(5 - $full - $half);
-                            for ($i = 0; $i < $full; $i++) {
-                                echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
-                            }
-                            if ($half) {
-                                echo '<svg class="icon icon-star-half"><use xlink:href="#icon-star-half"></use></svg>';
-                            }
-                            for ($i = 0; $i < $empty; $i++) {
-                                echo '<svg class="icon icon-star"><use xlink:href="#icon-star-empty"></use></svg>';
-                            }
-                        @endphp
+                            @php
+                                $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                                $average = round(array_sum($ratings) / count($ratings), 1);
+                            @endphp
+                            <span
+                                class="fs-7 lh-1 align-middle">{{ $average . ' (' . count($recipe->ratings) . ')' }}</span>
+                            @php
+                                $half = $average - floor($average);
+                                if ($half >= 0.4) {
+                                    $half = 1;
+                                } else {
+                                    $half = 0;
+                                }
+                                $full = floor($average);
+                                $empty = round(5 - $full - $half);
+                                for ($i = 0; $i < $full; $i++) {
+                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>';
+                                }
+                                if ($half) {
+                                    echo '<svg class="icon icon-star-half"><use xlink:href="#icon-star-half"></use></svg>';
+                                }
+                                for ($i = 0; $i < $empty; $i++) {
+                                    echo '<svg class="icon icon-star"><use xlink:href="#icon-star-empty"></use></svg>';
+                                }
+                            @endphp
                     </li>
                 </ul>
             </div>
-
-        </div>
-        <div class="mt-4">
             <div class="inner-column">
+                <h2>Rate this recipe :</h2>
+                @php
+                    $rating = $recipe->ratings->where('user_id', Auth::id())->first();
+                    $ratingNumber = $rating ? $rating->rating_number : 0;
+                    // dd($rating);
+                @endphp
+                @if ($ratingNumber == 0)
+                    <form action="{{ route('recipe.rate.store', $recipe) }}" method="POST">
+                        @else
+                        <form action="{{ route('recipe.rate.update', $rating) }}" method="POST">
+                            @method('PUT')
+                @endif
+                @csrf
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-1" value="1" @if ($ratingNumber == 1) checked @endif>
+                        <label for="rating-1" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-2" value="2" @if ($ratingNumber == 2) checked @endif>
+                        <label for="rating-2" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-3" value="3" @if ($ratingNumber == 3) checked @endif>
+                        <label for="rating-3" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-4" value="4" @if ($ratingNumber == 4) checked @endif>
+                        <label for="rating-4" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-5" value="5" @if ($ratingNumber == 5) checked @endif>
+                        <label for="rating-5" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="order-md-3 order-2">
+            <div class="inner-column mb-md-0 mb-4">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <h3>Comments :</h3>
                 <hr>
-                <div class="comments">
-                    @foreach ($recipe->comments as $comment)
-                        <div class="comment">
-                            <div class="comment-header">
+                <div class="comments row flex-column gy-1 mb-3">
+                    @foreach ($comments as $comment)
+                        <div class="comment border border-primary rounded">
+                            <div class="comment-header ps-1">
                                 <div class="comment-author">
                                     <strong>{{ $comment->user->name }}</strong>
                                     <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
                                 </div>
                             </div>
                             <div class="comment-body">
-                                <p>{{ $comment->content }}</p>
+                                <p class="ps-3">{{ $comment->content }}</p>
                             </div>
                         </div>
-                    @endforeach 
+                    @endforeach
+                </div>
+                {{ $comments->links() }}
+                <hr>
+                <form class="d-flex flex-wrap flex-md-nowrap justify-content-md-between justify-content-end"
+                    action="{{ route('comments.store', $recipe) }}" method="POST">
+                    @csrf
+                    <input class="form-control mb-2 mb-md-0 me-0 me-md-2" type="text" name="content"
+                        placeholder="Enter a comment" value="">
+                    <button class="btn btn-primary justify-self-end" type="submit">Send</button>
+                </form>
             </div>
-        </div>
     </section>
 @endsection

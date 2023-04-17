@@ -10,9 +10,7 @@ class Rating extends Model
     use HasFactory;
 
     protected $fillable = [
-        'rating',
-        'recipe_id',
-        'user_id',
+        'rating_number',
     ];
 
     public function recipe()

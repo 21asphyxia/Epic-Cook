@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
+use App\Models\Recipe;
 use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateRatingRequest;
 
@@ -34,31 +35,13 @@ class RatingController extends Controller
      * @param  \App\Http\Requests\StoreRatingRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRatingRequest $request)
+    public function store(StoreRatingRequest $request, Recipe $recipe)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Rating $rating)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Rating $rating)
-    {
-        //
+        // dd($request->validated());
+        $rating = Rating::make(['rating_number' => $request->rating]);
+        $rating->user()->associate(auth()->user());
+        $recipe->ratings()->save($rating);
+        return redirect()->back()->with('success', __('Rating added successfully'));
     }
 
     /**
@@ -70,7 +53,9 @@ class RatingController extends Controller
      */
     public function update(UpdateRatingRequest $request, Rating $rating)
     {
-        //
+        $rating->update(['rating_number' => $request->rating]);
+        return redirect()->back()->with('success', __('Rating updated successfully'));
+
     }
 
     /**

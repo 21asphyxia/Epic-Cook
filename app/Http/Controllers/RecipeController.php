@@ -16,7 +16,7 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::with('ratings', 'comments', 'user')->paginate(5);
-        return view('pages.recipes.index', ['recipes' => $recipes]);
+        return view('pages.admin.recipes.index', ['recipes' => $recipes]);
     }
 
     public function recentlyPopular()
@@ -24,13 +24,14 @@ class RecipeController extends Controller
         $recently = Recipe::with('ratings', 'comments', 'user')->orderBy('created_at', 'desc')->take(4)->get();
         // order by number of ratings in the relationship
         $popular = Recipe::with('ratings', 'comments', 'user')->withCount('ratings')->orderBy('ratings_count', 'desc')->take(4)->get();
-        return view('welcome', ['recently' => $recently, 'popular' => $popular]);
+        return view('pages.home', ['recently' => $recently, 'popular' => $popular]);
     }
 
     public function showRecipe(Recipe $recipe)
     {
-        $recipe = $recipe->load('ingredients', 'instructions','ratings', 'images', 'comments', 'user');
-        return view('pages.recipes.show', ['recipe' => $recipe]);
+        $recipe = $recipe->load('ingredients', 'instructions','ratings', 'images', 'user');
+        $comments = $recipe->comments()->orderBy('created_at', 'desc')->paginate(5);
+        return view('pages.recipes.show', ['recipe' => $recipe, 'comments' => $comments]);
     }
 
     /**
