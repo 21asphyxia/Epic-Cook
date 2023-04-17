@@ -13,7 +13,7 @@ class UpdateRatingRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateRatingRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'rating' => 'required|integer|min:1|max:5',
         ];
     }
 }

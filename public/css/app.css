@@ -45,7 +45,7 @@ input[type="search"] {
     background-color: transparent;
 }
 
-button[type="submit"] {
+/* button[type="submit"] {
     text-indent: -999px;
     overflow: hidden;
     width: 30px;
@@ -59,7 +59,7 @@ button[type="submit"] {
         no-repeat center;
     cursor: pointer;
     opacity: 0.7;
-}
+} */
 
 button[type="submit"]:hover {
     opacity: 1;
@@ -124,7 +124,7 @@ nav > div {
     position: unset;
 }
 
-.dropdown-menu {
+.nav-item .dropdown-menu {
     left: unset!important;
 }
 
@@ -186,3 +186,19 @@ nav > div {
 .ingredients-li::marker {
     color: #ffce34;
 }
+
+.comment {
+    padding-right: 5px;
+}
+
+.comment ul {
+    min-width: unset;
+}
+
+.fa-ellipsis {
+    font-size: 0.7rem;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+}   

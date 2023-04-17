@@ -20,6 +20,27 @@
                 nav: true,
             });
         });
+
+        let editButtons = document.querySelectorAll('.edit-comment');
+        editButtons.forEach((button) => {
+
+            button.addEventListener('click', (e) => {
+                console.log(e.target.parentElement.parentElement.parentElement.parentElement.querySelector(
+                    '.comment-text'));
+                let commentId = e.target.dataset.commentId;
+                let commentText = e.target.parentElement.parentElement.parentElement.parentElement
+                    .querySelector('.comment-text');
+                let commentInput = document.querySelector(`#comment-input-${commentId}`);
+                let form = `
+                    <form action='/comments/${commentId}' method="POST" class="d-flex mb-2">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" name="content" class="form-control me-2" value = "${commentText.innerText}">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                `;
+                commentText.innerHTML = form;
+            });
+        });
     </script>
 @endsection
 
@@ -49,62 +70,58 @@
             </symbol>
         </defs>
     </svg>
-    <section class="recipe-detail">
-        <div class="row justify-content-between">
-            <div class="text-column col-lg-8 col-md-12 col-sm-12">
-                <div class="">
-                    <!-- Upper Box -->
-                    <div class="upper-box">
-                        <div class="owl-carousel owl-theme">
-                            <figure class="image"><img src="{{ asset('img/card.jpg') }}" alt=""></figure>
-                        </div>
-                    </div>
-                    <h1>{{ $recipe->name }}</h1>
-                    <div class="inner-column mb-4">
-                        <h3 class="ps-3">List of ingredients :</h3>
-                        <hr>
-                        <ul class="ingredients-list ps-3">
-                            @foreach ($recipe->ingredients as $ingredient)
-                                <li class="ingredients-li">
-                                    <strong>{{ $ingredient->pivot->amount . $ingredient->pivot->unit }}</strong> of
-                                    {{ $ingredient->name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="inner-column">
-                        <h3 class="ps-3">Steps :</h3>
-                        <hr>
-                        <ul class="ingredients-list ps-3">
-                            @foreach ($recipe->instructions as $instruction)
-                                <li class="ingredients-li">
-                                    <span>{{ $instruction->step.". ".$instruction->description }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+    <section class="recipe-detail row justify-content-between">
+        <div class="text-column col-md-8 col-12 order-md-1 order-1">
+            <!-- Upper Box -->
+            <div class="upper-box">
+                <div class="owl-carousel owl-theme">
+                    <figure class="image"><img src="{{ asset('img/card.jpg') }}" alt=""></figure>
                 </div>
             </div>
-
-            <div class="info-column col-lg-4 col-md-12 col-sm-12">
-                <div class="inner-column">
-                    <h2>{{ $recipe->name }}</h2>
-                    <p>{{ $recipe->description }}</p>
-                    <ul class="recipe-info">
-                        <li>
-                            <span class="icon fa fa-user"></span>
-                            <strong>Author</strong>
-                            <p class="ps-3">{{ $recipe->user->name }}</p>
+            <div class="inner-column mb-4">
+                <h3 class="ps-3">List of ingredients :</h3>
+                <hr>
+                <ul class="ingredients-list ps-3">
+                    @foreach ($recipe->ingredients as $ingredient)
+                        <li class="ingredients-li">
+                            <strong>{{ $ingredient->pivot->amount . $ingredient->pivot->unit }}</strong> of
+                            {{ $ingredient->name }}
                         </li>
-                        <li>
-                            <span class="icon fa fa-clock"></span>
-                            <strong>Preparation Time</strong>
-                            <p class="ps-3">{{ $recipe->prep_time . ' minutes' }}</p>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="inner-column mb-4">
+                <h3 class="ps-3">Steps :</h3>
+                <hr>
+                <ul class="ingredients-list ps-3">
+                    @foreach ($recipe->instructions as $instruction)
+                        <li class="ingredients-li">
+                            <span>{{ $instruction->step . '. ' . $instruction->description }}</span>
                         </li>
-                        <li>
-                            <span class="icon bi bi-speedometer"></span>
-                            <strong>Difficulty</strong>
-                            <div class="ps-3">
-                            @php               
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        <div class="info-column col-md-4 col-12 order-md-2 order-3 ">
+            <div class="inner-column mb-4">
+                <h2>{{ $recipe->name }}</h2>
+                <p>{{ $recipe->description }}</p>
+                <ul class="recipe-info">
+                    <li>
+                        <span class="icon fa fa-user"></span>
+                        <strong>Author</strong>
+                        <p class="ps-3">{{ $recipe->user->name }}</p>
+                    </li>
+                    <li>
+                        <span class="icon fa fa-clock"></span>
+                        <strong>Preparation Time</strong>
+                        <p class="ps-3">{{ $recipe->prep_time . ' minutes' }}</p>
+                    </li>
+                    <li>
+                        <span class="icon bi bi-speedometer"></span>
+                        <strong>Difficulty</strong>
+                        <div class="ps-3">
+                            @php
                                 $full = $recipe->difficulty;
                                 $empty = 5 - $full;
                                 for ($i = 0; $i < $full; $i++) {
@@ -114,17 +131,18 @@
                                     echo '<svg class="icon icon-star-empty"><use xlink:href="#icon-star-empty"></use></svg>';
                                 }
                             @endphp
-                            </div>
-                        </li>
-                        <hr>
-                        <li>
-                            <strong>Ratings :</strong>
-                            <div class="">
+                        </div>
+                    </li>
+                    <hr>
+                    <li>
+                        <strong>Ratings :</strong>
+                        <div class="">
                             @php
                                 $ratings = $recipe->ratings->pluck('rating_number')->toArray();
                                 $average = round(array_sum($ratings) / count($ratings), 1);
                             @endphp
-                                <span class="fs-7 lh-1 align-middle">{{ $average.' ('.count($recipe->ratings).')'}}</span>
+                            <span
+                                class="fs-7 lh-1 align-middle">{{ $average . ' (' . count($recipe->ratings) . ')' }}</span>
                             @php
                                 $half = $average - floor($average);
                                 if ($half >= 0.4) {
@@ -144,11 +162,157 @@
                                     echo '<svg class="icon icon-star"><use xlink:href="#icon-star-empty"></use></svg>';
                                 }
                             @endphp
-                        </li>
-                    </ul>
-                </div>
-
+                    </li>
+                </ul>
             </div>
+            <div class="inner-column">
+                <h2>Rate this recipe :</h2>
+                @php
+                    $rating = $recipe->ratings->where('user_id', Auth::id())->first();
+                    $ratingNumber = $rating ? $rating->rating_number : 0;
+                    // dd($rating);
+                @endphp
+                @if ($ratingNumber == 0)
+                    <form action="{{ route('recipe.rate.store', $recipe) }}" method="POST">
+                    @else
+                        <form action="{{ route('recipe.rate.update', $rating) }}" method="POST">
+                            @method('PUT')
+                @endif
+                @csrf
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-1" value="1"
+                            @if ($ratingNumber == 1) checked @endif>
+                        <label for="rating-1" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-2" value="2"
+                            @if ($ratingNumber == 2) checked @endif>
+                        <label for="rating-2" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-3" value="3"
+                            @if ($ratingNumber == 3) checked @endif>
+                        <label for="rating-3" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-4" value="4"
+                            @if ($ratingNumber == 4) checked @endif>
+                        <label for="rating-4" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <input type="radio" name="rating" id="rating-5" value="5"
+                            @if ($ratingNumber == 5) checked @endif>
+                        <label for="rating-5" class="d-block">
+                            <svg class="icon icon-star">
+                                <use xlink:href="#icon-star"></use>
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="order-md-3 order-2">
+            <div class="inner-column mb-md-0 mb-4">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                <h3>Comments :</h3>
+                <hr>
+                <div class="row flex-column gy-1 mb-3">
+                    @foreach ($comments as $comment)
+                        @php
+                            $editable = false;
+                            if (Auth::id() == $comment->user_id) {
+                                $editable = true;
+                            }
+                        @endphp
+                        <div
+                            class="comment border border-primary rounded @if ($editable) d-flex justify-content-between pe-0 @endif">
+                            @if ($editable)
+                                <div>
+                            @endif
+                            <div class="comment-header ps-1">
+                                <div class="comment-author">
+                                    <strong>{{ $comment->user->name }}</strong>
+                                    <span
+                                        class="comment-date text-secondary d-none d-sm-inline">{{ $comment->created_at->toDayDateTimeString() }}
+                                        @if($comment->updated_at > $comment->created_at)
+                                        <span>
+                                            (edited : {{ $comment->updated_at->diffForHumans()}})
+                                        </span>
+                                        @endif
+                                    </span>
+
+                                    <span
+                                        class="comment-date text-secondary d-inline d-sm-none">{{ $comment->created_at->diffForHumans() }}
+                                        @if($comment->updated_at > $comment->created_at)
+                                        <span>
+                                            (edited)
+                                        </span>
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                <p class="comment-text ps-3 m-0">{{ $comment->content }}</p>
+                            </div>
+                            @if ($editable)
+                        </div>
+                    @endif
+                    @if ($editable)
+                        <div class="dropdown border-start border-primary pt-1 px-2">
+                            <button class="border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <button class="dropdown-item edit-comment"
+                                        data-comment-id="{{ $comment->id }}">Edit</button>
+                                </li>
+                                <li>
+                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+            {{ $comments->links() }}
+            <hr>
+            <form class="d-flex flex-wrap flex-md-nowrap justify-content-md-between justify-content-end"
+                action="{{ route('comments.store', $recipe) }}" method="POST">
+                @csrf
+                <input class="form-control mb-2 mb-md-0 me-0 me-md-2" type="text" name="content"
+                    placeholder="Enter a comment" value="">
+                <button class="btn btn-primary justify-self-end" type="submit">Send</button>
+            </form>
         </div>
     </section>
 @endsection

@@ -26,15 +26,20 @@
                 </thead>
                 <tbody>
                     @foreach ($recipes as $recipe)
+                    @php
+                    // dd($recipe->comments);
+                            $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                            $average = round(array_sum($ratings) / count($ratings), 1);
+                        @endphp
                         <tr>
                             <td class="text-center">{{ $recipe->id }}</td>
                             <td class="text-center">{{ $recipe->name }}</td>
                             <td class="text-center">{{ Str::limit($recipe->description, 30, '...') }}</td>
                             <td class="text-center">{{ $recipe->prep_time." min" }}</td>
                             <td class="text-center">{{ $recipe->difficulty."/5" }}</td>
-                            <td class="text-center">5</td>
+                            <td class="text-center">{{ $average }}</td>
                             <td class="text-center">{{ $recipe->user->name }}</td>
-                            <td class="text-center">20</td>
+                            <td class="text-center">{{ count($recipe->comments) }}</td>
                             <td class="text-center">
                                 <form class="d-inline" method="POST"
                                     action="{{ route('admin.recipes.destroy', $recipe) }}">
