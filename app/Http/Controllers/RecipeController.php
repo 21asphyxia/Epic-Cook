@@ -22,9 +22,13 @@ class RecipeController extends Controller
     public function recentlyPopular()
     {
         $recently = Recipe::with('ratings', 'comments', 'user')->orderBy('created_at', 'desc')->take(4)->get();
-        // order by number of ratings in the relationship
         $popular = Recipe::with('ratings', 'comments', 'user')->withCount('ratings')->orderBy('ratings_count', 'desc')->take(4)->get();
         return view('pages.home', ['recently' => $recently, 'popular' => $popular]);
+    }
+
+    public function allRecipes(){
+        $recipes = Recipe::with('ratings', 'comments', 'user')->paginate(12);
+        return view('pages.recipes.index', ['recipes' => $recipes]);
     }
 
     public function showRecipe(Recipe $recipe)

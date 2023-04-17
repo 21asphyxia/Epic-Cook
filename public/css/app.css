@@ -61,11 +61,11 @@ input[type="search"] {
     opacity: 0.7;
 } */
 
-button[type="submit"]:hover {
+/* button[type="submit"]:hover {
     opacity: 1;
     background-color: white;
     border: unset;
-}
+} */
 
 button[type="submit"]:focus,
 input[type="search"]:focus {
