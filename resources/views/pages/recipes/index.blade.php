@@ -143,7 +143,7 @@
                             <div class="mb-3 d-flex flex-column align-items-center">
                                 <label for="difficulty" class="form-label">Maximum Difficulty :</label>
                                 <input type="range" class="form-range" name="difficulty" id="difficulty"
-                                    min="1" max="5" step="1" value="{{ request()->difficulty ?? 5 }}/5">
+                                    min="1" max="5" step="1" value="{{ request()->difficulty ?? 5 }}">
                                 <span id="difficulty-filter" class="d-block">5/5</span>
                             </div>
                             <hr>
