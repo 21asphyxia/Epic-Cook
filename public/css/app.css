@@ -61,11 +61,11 @@ input[type="search"] {
     opacity: 0.7;
 } */
 
-button[type="submit"]:hover {
+/* button[type="submit"]:hover {
     opacity: 1;
     background-color: white;
     border: unset;
-}
+} */
 
 button[type="submit"]:focus,
 input[type="search"]:focus {
@@ -202,3 +202,21 @@ nav > div {
 .comment-date {
     font-size: 0.8rem;
 }   
+
+#ingredients-quantity {
+    width : 30%;
+}
+
+#ingredients-select {
+    width : 70%;
+}
+
+@media (min-width: 768px) {
+    #ingredients-quantity {
+        width : 10%;
+    }
+
+    #ingredients-select {
+        width : 80%;
+    }
+}

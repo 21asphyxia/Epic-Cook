@@ -28,6 +28,11 @@ class Recipe extends Model
         return $this->hasMany(Rating::class);
     }
 
+    public function avgRating()
+    {
+        return $this->ratings()->avg('rating_number');
+    }
+
     public function instructions()
     {
         return $this->hasMany(Instruction::class);

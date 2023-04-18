@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use App\Models\Ingredient;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
 
@@ -22,9 +24,28 @@ class RecipeController extends Controller
     public function recentlyPopular()
     {
         $recently = Recipe::with('ratings', 'comments', 'user')->orderBy('created_at', 'desc')->take(4)->get();
-        // order by number of ratings in the relationship
         $popular = Recipe::with('ratings', 'comments', 'user')->withCount('ratings')->orderBy('ratings_count', 'desc')->take(4)->get();
         return view('pages.home', ['recently' => $recently, 'popular' => $popular]);
+    }
+
+    public function allRecipes(Request $request){
+        $recipes = Recipe::with('ratings', 'comments', 'user');
+        if($request->has('difficulty')){
+            $recipes = $recipes->where('difficulty', '<=', $request->difficulty);
+        }
+
+        if($request->has('min_rating')){
+            $recipes = $recipes->withAvg('ratings', 'rating_number')
+                ->having('ratings_avg_rating_number', '>=', $request->min_rating);
+        }
+
+        if($request->has('max_rating')){
+            $recipes = $recipes->withAvg('ratings', 'rating_number')
+                ->having('ratings_avg_rating_number', '<=', $request->min_rating);
+        }
+        
+        $recipes = $recipes->paginate(12);
+        return view('pages.recipes.index', ['recipes' => $recipes]);
     }
 
     public function showRecipe(Recipe $recipe)
@@ -41,7 +62,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        $ingredients = Ingredient::all();
+        return view('pages.recipes.create', ['ingredients' => $ingredients]);
     }
 
     /**

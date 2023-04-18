@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 
 Route::get('/', function () {
-    return view('pages.dashboard');
+    return view('pages.admin.dashboard');
 })->name('admin.dashboard');
 
 // Recipes
