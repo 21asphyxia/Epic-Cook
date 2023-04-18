@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use App\Models\Ingredient;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
 
@@ -45,7 +46,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        $ingredients = Ingredient::all();
+        return view('pages.recipes.create', ['ingredients' => $ingredients]);
     }
 
     /**

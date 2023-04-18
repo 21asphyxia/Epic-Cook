@@ -51,7 +51,7 @@
         </div>
     </div>
 </nav>
-<hr class="mx-5">
 @if (Request::is('/'))
+    <hr class="mx-5">
     <img src="{{ asset('img/banner-2.png') }}" alt="hero" class="img-fluid" height="100">
 @endif
