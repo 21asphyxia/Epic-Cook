@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use App\Models\Ingredient;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
 
@@ -27,8 +28,23 @@ class RecipeController extends Controller
         return view('pages.home', ['recently' => $recently, 'popular' => $popular]);
     }
 
-    public function allRecipes(){
-        $recipes = Recipe::with('ratings', 'comments', 'user')->paginate(12);
+    public function allRecipes(Request $request){
+        $recipes = Recipe::with('ratings', 'comments', 'user');
+        if($request->has('difficulty')){
+            $recipes = $recipes->where('difficulty', '<=', $request->difficulty);
+        }
+
+        if($request->has('min_rating')){
+            $recipes = $recipes->withAvg('ratings', 'rating_number')
+                ->having('ratings_avg_rating_number', '>=', $request->min_rating);
+        }
+
+        if($request->has('max_rating')){
+            $recipes = $recipes->withAvg('ratings', 'rating_number')
+                ->having('ratings_avg_rating_number', '<=', $request->min_rating);
+        }
+        
+        $recipes = $recipes->paginate(12);
         return view('pages.recipes.index', ['recipes' => $recipes]);
     }
 
