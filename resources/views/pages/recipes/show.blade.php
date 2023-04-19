@@ -71,11 +71,22 @@
         </defs>
     </svg>
     <section class="recipe-detail row justify-content-between">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="text-column col-md-8 col-12 order-md-1 order-1">
             <!-- Upper Box -->
             <div class="upper-box">
                 <div class="owl-carousel owl-theme">
-                    <figure class="image"><img src="{{ asset('img/card.jpg') }}" alt=""></figure>
+                    @foreach ($recipe->images as $image)
+                        <div class="item">
+                            <figure class="image"><img src="@if ($recipe->images[0]->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
+                                @else {{ asset('storage/' . str_replace('public', '', $recipe->images[0]->path)) }} @endif" alt=""></figure>
+                        </div>
+                    @endforeach
                 </div>
             </div>
             <div class="inner-column mb-4">
@@ -96,7 +107,7 @@
                 <ul class="ingredients-list ps-3">
                     @foreach ($recipe->instructions as $instruction)
                         <li class="ingredients-li">
-                            <span>{{ $instruction->step . '. ' . $instruction->description }}</span>
+                            <span>{{ $instruction->description }}</span>
                         </li>
                     @endforeach
                 </ul>
@@ -138,8 +149,12 @@
                         <strong>Ratings :</strong>
                         <div class="">
                             @php
-                                $ratings = $recipe->ratings->pluck('rating_number')->toArray();
-                                $average = round(array_sum($ratings) / count($ratings), 1);
+                                if (count($recipe->ratings) == 0) {
+                                    $average = 0;
+                                } else {
+                                    $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                                    $average = round(array_sum($ratings) / count($ratings), 1);
+                                }
                             @endphp
                             <span
                                 class="fs-7 lh-1 align-middle">{{ $average . ' (' . count($recipe->ratings) . ')' }}</span>
@@ -232,11 +247,6 @@
         </div>
         <div class="order-md-3 order-2">
             <div class="inner-column mb-md-0 mb-4">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
                 <h3>Comments :</h3>
                 <hr>
                 <div class="row flex-column gy-1 mb-3">

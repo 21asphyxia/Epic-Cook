@@ -10,9 +10,7 @@ class Image extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'path',
-        'recipe_id',
     ];
 
     public function recipe()

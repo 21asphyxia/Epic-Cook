@@ -50,7 +50,8 @@
                                     <small class="d-block">Minimum rating :</small>
                                     <div class="d-flex justify-content-center">
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="min_rating" id="min_rating-1" value="1" @if (request()->min_rating == 1) checked @endif>
+                                            <input type="radio" name="min_rating" id="min_rating-1" value="1"
+                                                @if (request()->min_rating == 1) checked @endif>
                                             <label for="min_rating-1" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -58,7 +59,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="min_rating" id="min_rating-2" value="2" @if (request()->min_rating == 2) checked @endif>
+                                            <input type="radio" name="min_rating" id="min_rating-2" value="2"
+                                                @if (request()->min_rating == 2) checked @endif>
                                             <label for="min_rating-2" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -66,7 +68,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="min_rating" id="min_rating-3" value="3" @if (request()->min_rating == 3) checked @endif>
+                                            <input type="radio" name="min_rating" id="min_rating-3" value="3"
+                                                @if (request()->min_rating == 3) checked @endif>
                                             <label for="min_rating-3" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -74,7 +77,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="min_rating" id="min_rating-4" value="4" @if (request()->min_rating == 4) checked @endif>
+                                            <input type="radio" name="min_rating" id="min_rating-4" value="4"
+                                                @if (request()->min_rating == 4) checked @endif>
                                             <label for="min_rating-4" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -82,7 +86,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="min_rating" id="min_rating-5" value="5" @if (request()->min_rating == 5) checked @endif>
+                                            <input type="radio" name="min_rating" id="min_rating-5" value="5"
+                                                @if (request()->min_rating == 5) checked @endif>
                                             <label for="min_rating-5" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -96,7 +101,8 @@
                                     <small class="d-block">Maximum rating :</small>
                                     <div class="d-flex justify-content-center">
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="max_rating" id="rating-1" value="1" @if (request()->max_rating == 1) checked @endif>
+                                            <input type="radio" name="max_rating" id="rating-1" value="1"
+                                                @if (request()->max_rating == 1) checked @endif>
                                             <label for="rating-1" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -104,7 +110,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="max_rating" id="rating-2" value="2" @if (request()->max_rating == 2) checked @endif>
+                                            <input type="radio" name="max_rating" id="rating-2" value="2"
+                                                @if (request()->max_rating == 2) checked @endif>
                                             <label for="rating-2" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -112,7 +119,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="max_rating" id="rating-3" value="3" @if (request()->max_rating == 3) checked @endif>
+                                            <input type="radio" name="max_rating" id="rating-3" value="3"
+                                                @if (request()->max_rating == 3) checked @endif>
                                             <label for="rating-3" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -120,7 +128,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="max_rating" id="rating-4" value="4" @if (request()->max_rating == 4) checked @endif>
+                                            <input type="radio" name="max_rating" id="rating-4" value="4"
+                                                @if (request()->max_rating == 4) checked @endif>
                                             <label for="rating-4" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -128,7 +137,8 @@
                                             </label>
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
-                                            <input type="radio" name="max_rating" id="rating-5" value="5" @if (request()->max_rating == 5) checked @endif>
+                                            <input type="radio" name="max_rating" id="rating-5" value="5"
+                                                @if (request()->max_rating == 5) checked @endif>
                                             <label for="rating-5" class="d-block">
                                                 <svg class="icon icon-star">
                                                     <use xlink:href="#icon-star"></use>
@@ -143,7 +153,8 @@
                             <div class="mb-3 d-flex flex-column align-items-center">
                                 <label for="difficulty" class="form-label">Maximum Difficulty :</label>
                                 <input type="range" class="form-range" name="difficulty" id="difficulty"
-                                    min="1" max="5" step="1" value="{{ request()->difficulty ?? 5 }}/5">
+                                    min="1" max="5" step="1"
+                                    value="{{ request()->difficulty ?? 5 }}">
                                 <span id="difficulty-filter" class="d-block">5/5</span>
                             </div>
                             <hr>
@@ -157,15 +168,20 @@
                     @foreach ($recipes as $recipe)
                         <a class="col" href="{{ route('app.recipes.show', $recipe) }}">
                             <div class="card">
-                                <img class="card-img-top" src="{{ asset('img/card.jpg') }}" alt="recipe image">
+                                <img class="card-img-top" src="@if ($recipe->images[0]->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
+                                @else {{ asset('storage/' . str_replace('public', '', $recipe->images[0]->path)) }} @endif" alt="recipe image">
                                 <div class="card-body">
                                     <h3 class="text-truncate">{{ $recipe->name }}</h3>
                                     <p class="multiline-truncate-2">{{ Str::limit($recipe->description, 100, '...') }}
                                     </p>
                                     <div>
                                         @php
-                                            $ratings = $recipe->ratings->pluck('rating_number')->toArray();
-                                            $average = round(array_sum($ratings) / count($ratings), 1);
+                                            if (count($recipe->ratings) == 0) {
+                                                $average = 0;
+                                            } else {
+                                                $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                                                $average = round(array_sum($ratings) / count($ratings), 1);
+                                            }
                                         @endphp
                                         <span
                                             class="fs-7 lh-1 align-middle">{{ $average . ' (' . count($recipe->ratings) . ')' }}</span>

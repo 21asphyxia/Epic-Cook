@@ -17,7 +17,7 @@ class ImageFactory extends Factory
     public function definition()
     {
         return [
-            "path" => $this->faker->imageUrl(640, 480, 'food', true),
+            "path" => 'public/img/card.jpg',
             "created_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
             "updated_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
