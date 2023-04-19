@@ -1,8 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <h2>Create Your Recipe !</h2>
-    <form action="{{ route('app.recipes.store') }}" method="POST">
+    <form action="{{ route('app.recipes.store') }}" method="POST" enctype='multipart/form-data'>
         @csrf
         <div class="form-group mb-1">
             <label for="name">Recipe Name</label>
@@ -41,16 +50,14 @@
                     class="input-group-text bg-white" placeholder="Quantity">
                 <select id="ingredients-units" name="ingredients_units[]" class="form-select form-select-sm  w-auto"
                     placeholder="Unit">
+                    <option value="mg">mg</option>
                     <option value="g">g</option>
                     <option value="kg">kg</option>
                     <option value="ml">ml</option>
                     <option value="l">l</option>
-                    <option value="tsp">tsp</option>
-                    <option value="tbsp">tbsp</option>
-                    <option value="cup">cup</option>
-                    <option value="oz">oz</option>
-                    <option value="lb">lb</option>
-                    <option value="whole">whole</option>
+                    <option value="tsp">teaspoon</option>
+                    <option value="p">pieces</option>
+                    <option value="other">other</option>
                 </select>
                 <select id="ingredients-select-1" name="ingredients[]" class="form-select form-select-sm ingredient-select"
                     placeholder="Ingredient">
@@ -65,14 +72,14 @@
         <hr>
         <div class="form-group d-flex flex-column align-items-center mb-1">
             <label class="align-self-start">Recipe Instructions</label>
-            <input type="text" class="form-control mb-1" name="instruction" id="instructions"></input>
+            <input type="text" class="form-control mb-1" name="instructions[]" id="instructions"></input>
             <button id="add-instruction" class="btn btn-primary rounded-pill" type="button"><i
                     class="bi bi-plus"></i></button>
         </div>
         <hr>
         <div class="form-group">
             <label for="image">Recipe Image</label>
-            <input type="file" multiple class="form-control-file" name="image" id="image" placeholder=""
+            <input type="file" multiple class="form-control-file" name="images[]" id="image" placeholder=""
                 aria-describedby="fileHelpId">
         </div>
         <hr>
@@ -111,7 +118,7 @@
 
             $('#add-instruction').click(function() {
                 let newInstruction = $(
-                    '<input type="text" class="form-control mb-1" name="instruction" id="instructions">'
+                    '<input type="text" class="form-control mb-1" name="instructions[]" id="instructions">'
                 );
                 $(this).before(newInstruction);
             });
