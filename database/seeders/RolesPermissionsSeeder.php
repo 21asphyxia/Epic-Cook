@@ -22,23 +22,23 @@ class RolesPermissionsSeeder extends Seeder
 
         // Recipes
         Permission::create(['name' => 'create recipes']);
-        Permission::create(['name' => 'update recipes']);
+        Permission::create(['name' => 'update all recipes']);
         Permission::create(['name' => 'update own recipes']);
-        Permission::create(['name' => 'delete recipes']);
+        Permission::create(['name' => 'delete all recipes']);
         Permission::create(['name' => 'delete own recipes']);
 
         // Ingredients
-        Permission::create(['name' => 'update ingredients']);
-        Permission::create(['name' => 'delete ingredients']);
+        Permission::create(['name' => 'update all ingredients']);
+        Permission::create(['name' => 'delete all ingredients']);
 
         // Instructions
-        Permission::create(['name' => 'update instructions']);
-        Permission::create(['name' => 'delete instructions']);
+        Permission::create(['name' => 'update all instructions']);
+        Permission::create(['name' => 'delete all instructions']);
 
         // Comments
         Permission::create(['name' => 'create comments']);
         Permission::create(['name' => 'update own comments']);
-        Permission::create(['name' => 'delete comments']);
+        Permission::create(['name' => 'delete all comments']);
         Permission::create(['name' => 'delete own comments']);
 
         // Ratings

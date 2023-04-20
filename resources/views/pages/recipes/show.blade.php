@@ -252,14 +252,12 @@
                 <div class="row flex-column gy-1 mb-3">
                     @foreach ($comments as $comment)
                         @php
-                            $editable = false;
-                            if (Auth::id() == $comment->user_id) {
-                                $editable = true;
-                            }
+                            $editable = auth()->user()->can('update all comments') || (auth()->user()->can('update own comments') && $comment->user()->is(auth()->user()));
+                            $deletable = auth()->user()->can('delete all comments') || (auth()->user()->can('delete own comments') && $comment->user()->is(auth()->user()));
                         @endphp
                         <div
-                            class="comment border border-primary rounded @if ($editable) d-flex justify-content-between pe-0 @endif">
-                            @if ($editable)
+                            class="comment border border-primary rounded @if ($editable || $deletable) d-flex justify-content-between pe-0 @endif">
+                            @if ($editable || $deletable)
                                 <div>
                             @endif
                             <div class="comment-header ps-1">
@@ -287,20 +285,23 @@
                             <div class="comment-body">
                                 <p class="comment-text ps-3 m-0">{{ $comment->content }}</p>
                             </div>
-                            @if ($editable)
+                            @if ($editable || $deletable)
                         </div>
                     @endif
-                    @if ($editable)
+                    @if ($editable || $deletable)
                         <div class="dropdown border-start border-primary pt-1 px-2">
                             <button class="border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @if ($editable)
                                 <li>
                                     <button class="dropdown-item edit-comment"
                                         data-comment-id="{{ $comment->id }}">Edit</button>
                                 </li>
+                                @endif
+                                @if ($deletable)
                                 <li>
                                     <form action="{{ route('comments.destroy', $comment) }}" method="POST">
                                         @csrf
@@ -308,6 +309,7 @@
                                         <button type="submit" class="dropdown-item">Delete</button>
                                     </form>
                                 </li>
+                                @endif
                             </ul>
                         </div>
                     @endif
