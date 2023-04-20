@@ -196,7 +196,7 @@
                 @csrf
                 <div class="d-flex justify-content-center">
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-1" value="1"
+                        <input type="radio" name="rating_number" id="rating-1" value="1"
                             @if ($ratingNumber == 1) checked @endif>
                         <label for="rating-1" class="d-block">
                             <svg class="icon icon-star">
@@ -205,7 +205,7 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-2" value="2"
+                        <input type="radio" name="rating_number" id="rating-2" value="2"
                             @if ($ratingNumber == 2) checked @endif>
                         <label for="rating-2" class="d-block">
                             <svg class="icon icon-star">
@@ -214,7 +214,7 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-3" value="3"
+                        <input type="radio" name="rating_number" id="rating-3" value="3"
                             @if ($ratingNumber == 3) checked @endif>
                         <label for="rating-3" class="d-block">
                             <svg class="icon icon-star">
@@ -223,7 +223,7 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-4" value="4"
+                        <input type="radio" name="rating_number" id="rating-4" value="4"
                             @if ($ratingNumber == 4) checked @endif>
                         <label for="rating-4" class="d-block">
                             <svg class="icon icon-star">
@@ -232,7 +232,7 @@
                         </label>
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                        <input type="radio" name="rating" id="rating-5" value="5"
+                        <input type="radio" name="rating_number" id="rating-5" value="5"
                             @if ($ratingNumber == 5) checked @endif>
                         <label for="rating-5" class="d-block">
                             <svg class="icon icon-star">
