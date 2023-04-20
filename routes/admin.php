@@ -3,13 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 
-Route::get('/', function () {
-    return view('pages.admin.dashboard');
-})->name('admin.dashboard');
 
 // Recipes
-Route::controller(RecipeController::class)->group(function () {
-    route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/', function () {
+        return view('pages.admin.dashboard');
+    })->name('admin.dashboard');
+    Route::controller(RecipeController::class)->group(function () {
         Route::prefix('recipes')->group(function () {
             Route::get('/', 'index')->name('admin.recipes.index');
             Route::get('/{recipe}', 'show')->name('admin.recipes.show');

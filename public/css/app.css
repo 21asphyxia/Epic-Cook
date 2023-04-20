@@ -78,7 +78,7 @@ nav > div {
 
 @media (min-width: 992px) {
     .navbar-brand {
-        width: 40%;
+        margin-right: 35%;
     }
 }
 

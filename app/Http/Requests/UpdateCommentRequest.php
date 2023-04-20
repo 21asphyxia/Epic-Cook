@@ -13,7 +13,7 @@ class UpdateCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('update all comments') || (auth()->user()->can('update own comments') && $this->comment->user()->is(auth()->user()));
     }
 
     /**

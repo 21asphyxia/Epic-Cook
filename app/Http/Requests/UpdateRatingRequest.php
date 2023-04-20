@@ -13,7 +13,7 @@ class UpdateRatingRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('update own ratings') && $this->rating->user()->is(auth()->user());
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateRatingRequest extends FormRequest
     public function rules()
     {
         return [
-            'rating' => 'required|integer|min:1|max:5',
+            'rating_number' => 'required|integer|min:1|max:5',
         ];
     }
 }

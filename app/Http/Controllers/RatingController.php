@@ -38,7 +38,7 @@ class RatingController extends Controller
     public function store(StoreRatingRequest $request, Recipe $recipe)
     {
         // dd($request->validated());
-        $rating = Rating::make(['rating_number' => $request->rating]);
+        $rating = Rating::make(['rating_number' => $request->rating_number]);
         $rating->user()->associate(auth()->user());
         $recipe->ratings()->save($rating);
         return redirect()->back()->with('success', __('Rating added successfully'));
@@ -53,7 +53,7 @@ class RatingController extends Controller
      */
     public function update(UpdateRatingRequest $request, Rating $rating)
     {
-        $rating->update(['rating_number' => $request->rating]);
+        $rating->update(['rating_number' => $request->rating_number]);
         return redirect()->back()->with('success', __('Rating updated successfully'));
 
     }
