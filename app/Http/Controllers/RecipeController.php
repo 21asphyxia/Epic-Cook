@@ -30,7 +30,7 @@ class RecipeController extends Controller
 
     public function allRecipes(Request $request)
     {
-        $recipes = Recipe::with('ratings', 'comments', 'user');
+        $recipes = Recipe::with('ratings', 'comments', 'user', 'images')->orderBy('created_at', 'desc');
         if ($request->has('difficulty')) {
             $recipes = $recipes->where('difficulty', '<=', $request->difficulty);
         }
@@ -79,8 +79,15 @@ class RecipeController extends Controller
     public function store(StoreRecipeRequest $request)
     {
         $recipe = $request->user()->recipes()->create($request->validated());
+        // dd($request->ingredients);
         foreach ($request->ingredients as $key => $ingredient) {
-            $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
+            if(Ingredient::find($ingredient)) {
+                $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
+            }
+            else {
+                $ingredient = Ingredient::create(['name' => $ingredient]);
+                $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
+            }
         }
 
         foreach ($request->instructions as $key => $instruction) {

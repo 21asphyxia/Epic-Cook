@@ -27,14 +27,16 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(RecipeController::class)->group(function () {
     Route::prefix('recipes')->group(function () {
+        Route::middleware('auth')->group(function () {
+            Route::get('/create', 'create')->name('app.recipes.create');
+            Route::post('/', 'store')->name('app.recipes.store');
+            Route::get('/{recipe}/edit', 'edit')->name('app.recipes.edit');
+            Route::put('/{recipe}', 'update')->name('app.recipes.update');
+            Route::delete('/{recipe}', 'destroy')->name('app.recipes.destroy');
+        });     
         Route::get('/', 'allRecipes')->name('app.recipes');
-        Route::get('/create', 'create')->name('app.recipes.create');
         Route::get('/{recipe}', 'showRecipe')->name('app.recipes.show');
-        Route::post('/', 'store')->name('app.recipes.store');
-        Route::get('/{recipe}/edit', 'edit')->name('app.recipes.edit');
-        Route::put('/{recipe}', 'update')->name('app.recipes.update');
-        Route::delete('/{recipe}', 'destroy')->name('app.recipes.destroy');
-    });
+    }); 
 });
 
 Route::controller(CommentController::class)->group(function () {

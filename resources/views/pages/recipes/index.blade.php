@@ -168,8 +168,8 @@
                     @foreach ($recipes as $recipe)
                         <a class="col" href="{{ route('app.recipes.show', $recipe) }}">
                             <div class="card">
-                                <img class="card-img-top" src="@if ($recipe->images[0]->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
-                                @else {{ asset('storage/' . str_replace('public', '', $recipe->images[0]->path)) }} @endif" alt="recipe image">
+                                <img class="card-img-top" src="@if ($recipe->images->first()->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
+                                @else {{ asset('storage/' . str_replace('public', '', $recipe->images->first()->path)) }} @endif" alt="recipe image">
                                 <div class="card-body">
                                     <h3 class="text-truncate">{{ $recipe->name }}</h3>
                                     <p class="multiline-truncate-2">{{ Str::limit($recipe->description, 100, '...') }}
