@@ -19,7 +19,7 @@ class ImageFactory extends Factory
         return [
             "path" => 'public/img/card.jpg',
             "created_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
-            "updated_at" => $this->faker->dateTimeBetween('-1 year', 'now'),
+            "updated_at" => NULL,
         ];
     }
 }

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Recipe;
 use App\Models\Ingredient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class RecipeController extends Controller
 {
@@ -81,10 +83,9 @@ class RecipeController extends Controller
         $recipe = $request->user()->recipes()->create($request->validated());
         // dd($request->ingredients);
         foreach ($request->ingredients as $key => $ingredient) {
-            if(Ingredient::find($ingredient)) {
+            if (Ingredient::find($ingredient)) {
                 $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
-            }
-            else {
+            } else {
                 $ingredient = Ingredient::create(['name' => $ingredient]);
                 $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
             }
@@ -94,13 +95,16 @@ class RecipeController extends Controller
             $recipe->instructions()->create(['step' => $key + 1, 'description' => $instruction]);
         }
 
-        foreach ($request->file('images') as $key => $image) {
-            
-            // $name = (time()+$key) . '.' . $image->getClientOriginalExtension();
-            // $destinationPath = public_path('/uploads');
-            $name = $image->store('public/upload');
-            // ($destinationPath, $name);
-            $recipe->images()->create(['path' => $name]);
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $key => $image) {
+                $image_resized = Image::make($image)->resize(500, 500)->encode('jpg', 80);
+
+                Storage::disk('public')->put('upload/' . $image->hashName(), $image_resized);
+
+                $name = 'upload/' . $image->hashName();
+
+                $recipe->images()->create(['path' => $name]);
+            }
         }
         return redirect()->route('app.recipes.show', $recipe);
     }
@@ -130,7 +134,9 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe)
     {
-        //
+        $allIngredients = Ingredient::all();
+        $recipe = $recipe->load('ingredients', 'instructions', 'comments', 'images');
+        return view('pages.recipes.edit', ['recipe' => $recipe, 'allIngredients' => $allIngredients]);
     }
 
     /**
@@ -142,7 +148,34 @@ class RecipeController extends Controller
      */
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
-        //
+        $recipe->update($request->validated());
+        $recipe->ingredients()->detach();
+        foreach ($request->ingredients as $key => $ingredient) {
+            if (Ingredient::find($ingredient)) {
+                $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
+            } else {
+                $ingredient = Ingredient::create(['name' => $ingredient]);
+                $recipe->ingredients()->attach($ingredient, ['amount' => $request->ingredients_amounts[$key], 'unit' => $request->ingredients_units[$key]]);
+            }
+        }
+
+        $recipe->instructions()->delete();
+        foreach ($request->instructions as $key => $instruction) {
+            $recipe->instructions()->create(['step' => $key + 1, 'description' => $instruction]);
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $key => $image) {
+                $image_resized = Image::make($image)->resize(800, 500)->encode('jpg', 80);
+
+                Storage::disk('public')->put('upload/' . $image->hashName(), $image_resized);
+
+                $name = 'upload/' . $image->hashName();
+
+                $recipe->images()->create(['path' => $name]);
+            }
+        }
+        return redirect()->route('app.recipes.show', $recipe);
     }
 
     /**
@@ -153,8 +186,15 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
+        $images = $recipe->images;
+
+        foreach ($images as $image) {
+            $imagePath = $image->path;
+            unlink(storage_path('app/public/' . $imagePath));
+        }
+
         $recipe->delete();
 
-        return redirect()->back()->with('success', 'Recipe deleted successfully');
+        return redirect()->route('app.recipes');
     }
 }

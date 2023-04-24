@@ -40,7 +40,7 @@ class Recipe extends Model
 
     public function images()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class)->orderBy('updated_at', 'desc');
     }
 
     public function comments()

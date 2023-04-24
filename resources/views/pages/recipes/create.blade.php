@@ -79,7 +79,7 @@
         <hr>
         <div class="form-group">
             <label for="image">Recipe Image</label>
-            <input type="file" multiple class="form-control-file" name="images[]" id="image" placeholder=""
+            <input type="file" multiple class="form-control" name="images[]" id="image" placeholder=""
                 aria-describedby="fileHelpId">
         </div>
         <hr>

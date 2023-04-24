@@ -11,6 +11,7 @@ class Image extends Model
 
     protected $fillable = [
         'path',
+        'updated_at'
     ];
 
     public function recipe()

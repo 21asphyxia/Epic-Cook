@@ -11,7 +11,7 @@
     <script>
         $(document).ready(function() {
             $(".owl-carousel").owlCarousel({
-                autoHeight: true,
+                // autoHeight: true,
                 center: true,
                 autoWidth: true,
                 items: 1,
@@ -79,15 +79,46 @@
         @endif
         <div class="text-column col-md-8 col-12 order-md-1 order-1">
             <!-- Upper Box -->
-            <div class="upper-box">
-                <div class="owl-carousel owl-theme">
+            <div class="upper-box mb-3">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                    <div class="carousel-indicators">
+                        @php
+                            $i = 0;
+                        @endphp
+                        @foreach ($recipe->images as $image)
+                            <button type="button" data-bs-target="#carouselExampleIndicators" @if($i == 0) class="active" @endif data-bs-slide-to="{{ $i++ }}"></button>
+                        @endforeach
+                    </div>
+                    <div class="carousel-inner">
+                        @php
+                            $j = 0;
+                        @endphp
+                        @foreach ($recipe->images as $image)
+                            <div class="carousel-item @if($j++ == 0) active @endif">
+                                <img src="@if ($image->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
+                                @else {{ asset('storage/' . str_replace('public', '', $image->path)) }} @endif" class="d-block w-100" alt="...">
+                            </div>
+                            @endforeach
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+                {{-- <div class="owl-carousel owl-theme">
                     @foreach ($recipe->images as $image)
                         <div class="item">
-                            <figure class="image"><img src="@if ($recipe->images[0]->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
-                                @else {{ asset('storage/' . str_replace('public', '', $recipe->images[0]->path)) }} @endif" alt=""></figure>
+                            <figure class="image"><img
+                                    src="@if ($recipe->images[0]->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
+                                @else {{ asset('storage/' . str_replace('public', '', $recipe->images[0]->path)) }} @endif"
+                                    alt=""></figure>
                         </div>
                     @endforeach
-                </div>
+                </div> --}}
             </div>
             <div class="inner-column mb-4">
                 <h3 class="ps-3">List of ingredients :</h3>
@@ -179,6 +210,16 @@
                             @endphp
                     </li>
                 </ul>
+                <hr>
+                <div class="d-flex justify-content-center">
+
+                    <a href="{{ route('app.recipes.edit', $recipe) }}" class="btn btn-primary me-2">Edit</a>
+                    <form action="{{ route('app.recipes.destroy', $recipe) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
             <div class="inner-column">
                 <h2>Rate this recipe :</h2>
@@ -251,33 +292,51 @@
                 <hr>
                 <div class="row flex-column gy-1 mb-3">
                     @foreach ($comments as $comment)
-                        @php
-                            $editable = auth()->user()->can('update all comments') || (auth()->user()->can('update own comments') && $comment->user()->is(auth()->user()));
-                            $deletable = auth()->user()->can('delete all comments') || (auth()->user()->can('delete own comments') && $comment->user()->is(auth()->user()));
-                        @endphp
+                        @auth
+                            @php
+                                $editable =
+                                    auth()
+                                        ->user()
+                                        ->can('update all comments') ||
+                                    (auth()
+                                        ->user()
+                                        ->can('update own comments') &&
+                                        $comment->user()->is(auth()->user()));
+                                $deletable =
+                                    auth()
+                                        ->user()
+                                        ->can('delete all comments') ||
+                                    (auth()
+                                        ->user()
+                                        ->can('delete own comments') &&
+                                        $comment->user()->is(auth()->user()));
+                            @endphp
+                        @endauth
                         <div
-                            class="comment border border-primary rounded @if ($editable || $deletable) d-flex justify-content-between pe-0 @endif">
-                            @if ($editable || $deletable)
-                                <div>
-                            @endif
+                            class="comment rounded @auth @if ($editable || $deletable) d-flex justify-content-between pe-0 @endif @endauth">
+                            @auth
+                                @if ($editable || $deletable)
+                                    <div>
+                                @endif
+                            @endauth
                             <div class="comment-header ps-1">
                                 <div class="comment-author">
                                     <strong>{{ $comment->user->name }}</strong>
                                     <span
                                         class="comment-date text-secondary d-none d-sm-inline">{{ $comment->created_at->toDayDateTimeString() }}
-                                        @if($comment->updated_at > $comment->created_at)
-                                        <span>
-                                            (edited : {{ $comment->updated_at->diffForHumans()}})
-                                        </span>
+                                        @if ($comment->updated_at > $comment->created_at)
+                                            <span>
+                                                (edited : {{ $comment->updated_at->diffForHumans() }})
+                                            </span>
                                         @endif
                                     </span>
 
                                     <span
                                         class="comment-date text-secondary d-inline d-sm-none">{{ $comment->created_at->diffForHumans() }}
-                                        @if($comment->updated_at > $comment->created_at)
-                                        <span>
-                                            (edited)
-                                        </span>
+                                        @if ($comment->updated_at > $comment->created_at)
+                                            <span>
+                                                (edited)
+                                            </span>
                                         @endif
                                     </span>
                                 </div>
@@ -285,34 +344,34 @@
                             <div class="comment-body">
                                 <p class="comment-text ps-3 m-0">{{ $comment->content }}</p>
                             </div>
-                            @if ($editable || $deletable)
-                        </div>
-                    @endif
-                    @if ($editable || $deletable)
-                        <div class="dropdown border-start border-primary pt-1 px-2">
-                            <button class="border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @if ($editable)
-                                <li>
-                                    <button class="dropdown-item edit-comment"
-                                        data-comment-id="{{ $comment->id }}">Edit</button>
-                                </li>
-                                @endif
-                                @if ($deletable)
-                                <li>
-                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item">Delete</button>
-                                    </form>
-                                </li>
-                                @endif
-                            </ul>
-                        </div>
-                    @endif
+                            @auth
+                                @if ($editable || $deletable)
+                            </div>
+                            <div class="dropdown pt-1 px-2">
+                                <button class="border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @if ($editable)
+                                        <li>
+                                            <button class="dropdown-item edit-comment"
+                                                data-comment-id="{{ $comment->id }}">Edit</button>
+                                        </li>
+                                    @endif
+                                    @if ($deletable)
+                                        <li>
+                                            <form action="{{ route('comments.destroy', $comment) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item">Delete</button>
+                                            </form>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        @endif
+                    @endauth
                 </div>
                 @endforeach
             </div>

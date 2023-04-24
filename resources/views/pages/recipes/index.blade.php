@@ -28,9 +28,18 @@
     </svg>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <h1>Recipes</h1>
                 <div class="row flex-nowrap justify-content-end">
+                    <div class="col-md-4">
+                        <form action="{{ route('app.recipes') }}" method="GET">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" placeholder="Search"
+                                    value="{{ request()->search }}">
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
                     <button class="btn btn-primary w-auto me-2" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasExample"><i class="bi bi-filter"></i> Filter</button>
                     <a href="{{ route('app.recipes.create') }}" class="btn btn-primary w-auto">Create Recipe</a>

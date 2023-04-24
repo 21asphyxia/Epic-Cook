@@ -224,3 +224,47 @@ nav > div {
 .select2-selection__rendered {
     line-height: 2!important;
 }
+
+.flexrow>* {
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+
+.overflow-x-scroll {
+    overflow-x: auto;
+}
+
+.overflow-x-scroll::-webkit-scrollbar {
+    height: 12px;
+}
+
+.overflow-x-scroll::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+.overflow-x-scroll::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #363636;
+}
+
+.card {
+    height : 400px;
+}
+
+.card .card-img-top {
+    height : 200px;
+    object-fit: cover;
+}
+/* 
+.carousel-item {
+    height : 500px;
+}
+
+.carousel-item img {
+    height : 500px;
+    object-fit: cover;
+} */

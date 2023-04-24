@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,15 @@ Route::controller(RatingController::class)->group(function () {
         Route::middleware('auth')->group(function () {
             Route::post('/{recipe}', 'store')->name('recipe.rate.store')->middleware('can:create ratings');
             Route::put('/{rating}', 'update')->name('recipe.rate.update')->middleware('can:update own ratings');
+        });
+    });
+});
+
+Route::controller(ImageController::class)->group(function () {
+    Route::prefix('images')->group(function () {
+        Route::middleware('auth')->group(function () {
+            Route::put('/{image}', 'setMain')->name('recipe.image.update')->middleware('permission:update recipes|update own recipes');
+            Route::delete('/{image}', 'destroy')->name('recipe.image.destroy')->middleware('permission:update recipes|update own recipes');
         });
     });
 });

@@ -38,7 +38,7 @@ class StoreRecipeRequest extends FormRequest
             'instructions' => 'required|array',
             'instructions.*' => 'required|string|max:255',
             'images' => 'required|array',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ];
     }
 }

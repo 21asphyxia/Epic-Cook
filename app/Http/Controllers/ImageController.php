@@ -8,58 +8,6 @@ use App\Http\Requests\UpdateImageRequest;
 
 class ImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreImageRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreImageRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Image $image)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Image $image)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -68,11 +16,14 @@ class ImageController extends Controller
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateImageRequest $request, Image $image)
+    public function setMain(Image $image)
     {
-        //
+        $image->update(['updated_at' => now()]);
+        
+        return redirect()->back()->with('success', __('Image updated successfully'));
     }
 
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -81,6 +32,9 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        $imagePath = $image->path;
+        unlink(storage_path('app/' . $imagePath));
+        $image->delete();
+        return redirect()->back()->with('success', __('Image deleted successfully'));
     }
 }
