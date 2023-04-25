@@ -17,9 +17,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             Route::delete('/{recipe}', 'destroy')->name('admin.recipes.destroy');
             Route::controller(CommentController::class)->group(function () {
                 Route::prefix('{recipe}/comments')->group(function () {
+                    Route::delete('/{comment}', 'destroy')->name('admin.comments.destroy')->middleware('can:delete all comments');
                     Route::get('/', 'index')->name('admin.recipe.comments');
                 });
-                Route::delete('/{comment}', 'destroy')->name('admin.comments.destroy');
             });
             // Route::get('/difficulty/{difficulty}', 'getRecipesByDifficulty')->name('recipes.difficulty');
             // Route::post('/', 'store')->name('recipes.store');

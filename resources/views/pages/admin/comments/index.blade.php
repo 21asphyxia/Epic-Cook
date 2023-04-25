@@ -16,7 +16,7 @@
                         <td class="text-center">Author</td>
                         <td class="text-center">Content</td>
                         <td class="text-center">Created at</td>
-                        <td class="text-center">Updated at</td>
+                        <td class="text-center">Edited at</td>
                         <td class="text-center"></td>
                     </tr>
                 </thead>
@@ -30,7 +30,7 @@
                             <td class="text-center">{{ $comment->updated_at ? $comment->updated_at->toDayDateTimeString() : 'Not edited' }}</td>
                             <td class="text-center">
                                 <form class="d-inline" method="POST"
-                                    action="{{ route('admin.comments.destroy', $comment) }}">
+                                    action="{{ route('admin.comments.destroy', [$comment->recipe, $comment]) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button class="unstyled" type="submit"><i class="text-danger bi bi-trash"></i></button>
