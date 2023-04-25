@@ -14,9 +14,10 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Recipe $recipe)
     {
-        
+        $comments = $recipe->comments()->get();
+        return view('pages.admin.comments.index', ['comments' => $comments]);
     }
 
     /**
