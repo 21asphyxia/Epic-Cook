@@ -26,20 +26,32 @@
                 </thead>
                 <tbody>
                     @foreach ($recipes as $recipe)
-                    @php
-                    // dd($recipe->comments);
-                            $ratings = $recipe->ratings->pluck('rating_number')->toArray();
-                            $average = round(array_sum($ratings) / count($ratings), 1);
+                        @php
+                            if (count($recipe->ratings) == 0) {
+                                $average = 0;
+                            } else {
+                                // $average = round($recipe->ratings->sum('rating_number') / count($recipe->ratings), 1
+                                $ratings = $recipe->ratings->pluck('rating_number')->toArray();
+                                $average = round(array_sum($ratings) / count($ratings), 1);
+                            }
                         @endphp
                         <tr>
                             <td class="text-center">{{ $recipe->id }}</td>
                             <td class="text-center">{{ $recipe->name }}</td>
                             <td class="text-center">{{ Str::limit($recipe->description, 30, '...') }}</td>
-                            <td class="text-center">{{ $recipe->prep_time." min" }}</td>
-                            <td class="text-center">{{ $recipe->difficulty."/5" }}</td>
+                            <td class="text-center">{{ $recipe->prep_time . ' min' }}</td>
+                            <td class="text-center">{{ $recipe->difficulty . '/5' }}</td>
                             <td class="text-center">{{ $average }}</td>
-                            <td class="text-center">{{ $recipe->user->name }}</td>
-                            <td class="text-center"><a href="{{ route('admin.recipe.comments',$recipe)}}">{{ count($recipe->comments) }}</a></td>
+                            <td class="text-center">
+                                @if ($recipe->user)
+                                    {{ $recipe->user->name }}
+                                @else
+                                    Deleted User
+                                @endif
+                            </td>
+                            <td class="text-center"><a
+                                    href="{{ route('admin.recipe.comments', $recipe) }}">{{ count($recipe->comments) }}</a>
+                            </td>
                             <td class="text-center">
                                 <form class="d-inline" method="POST"
                                     action="{{ route('admin.recipes.destroy', $recipe) }}">
@@ -51,7 +63,7 @@
                         </tr>
                     @endforeach
 
-                </tbody>    
+                </tbody>
             </table>
         </div>
     </div>
