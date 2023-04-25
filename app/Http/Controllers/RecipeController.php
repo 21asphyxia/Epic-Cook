@@ -19,7 +19,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::with('ratings', 'comments', 'images', 'user')->paginate(5);
+        $recipes = Recipe::with('ratings', 'comments', 'images', 'user')->orderBy('created_at', 'desc');
         return view('pages.admin.recipes.index', ['recipes' => $recipes]);
     }
 
@@ -30,28 +30,9 @@ class RecipeController extends Controller
         return view('pages.home', ['recently' => $recently, 'popular' => $popular]);
     }
 
-    public function allRecipes(Request $request)
+    public function allRecipes()
     {
-        $recipes = Recipe::with('ratings', 'comments', 'user', 'images')->orderBy('created_at', 'desc');
-        if ($request->has('difficulty')) {
-            $recipes = $recipes->where('difficulty', '<=', $request->difficulty);
-        }
-
-        if ($request->has('min_rating')) {
-            $recipes = $recipes->withAvg('ratings', 'rating_number')
-                ->having('ratings_avg_rating_number', '>=', $request->min_rating);
-
-            if ($request->has('max_rating')) {
-                $recipes = $recipes->having('ratings_avg_rating_number', '<=', $request->max_rating);
-            }
-        } elseif ($request->has('max_rating')) {
-            $recipes = $recipes->withAvg('ratings', 'rating_number')
-                ->having('ratings_avg_rating_number', '<=', $request->max_rating);
-        }
-
-
-        $recipes = $recipes->paginate(8);
-        return view('pages.recipes.index', ['recipes' => $recipes]);
+        return view('pages.recipes.index');
     }
 
     public function showRecipe(Recipe $recipe)

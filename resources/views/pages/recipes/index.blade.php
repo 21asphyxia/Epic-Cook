@@ -31,7 +31,7 @@
             <div class="col-12">
                 <h1>Recipes</h1>
                 <div class="row flex-nowrap justify-content-end">
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <form action="{{ route('app.recipes') }}" method="GET">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Search"
@@ -221,7 +221,8 @@
                         </a>
                     @endforeach
                 </div>
-                {{ $recipes->links() }}
+                {{ $recipes->links() }} --}}
+                @livewire('show-recipes')
             </div>
         </div>
     </div>

@@ -14,5 +14,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     @yield('additionalCSS')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @livewireStyles
     {{-- <script defer src="https://cdn.tailwindcss.com"></script> --}}
 </head>
