@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->integer('amount')->nullable(false);
             $table->enum('unit', ['mg', 'g', 'kg', 'ml', 'l', 'tsp', 'p', 'other'])->nullable(false);
-            $table->integer('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('ingredient_id')->constrained('ingredients')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('recipe_id')->references('id')->on('recipes')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

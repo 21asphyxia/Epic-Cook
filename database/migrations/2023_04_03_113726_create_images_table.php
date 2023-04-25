@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('path')->nullable(false);
-            $table->integer('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('recipe_id')->references('id')->on('recipes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
