@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(false);
-            $table->string('image')->default('default_ingredient.jpg');
             $table->timestamps();
         });
     }

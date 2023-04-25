@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\IngredientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 
@@ -21,9 +22,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
                     Route::get('/', 'index')->name('admin.recipe.comments');
                 });
             });
-            // Route::get('/difficulty/{difficulty}', 'getRecipesByDifficulty')->name('recipes.difficulty');
-            // Route::post('/', 'store')->name('recipes.store');
-            // Route::put('/{recipe}', 'update')->name('recipes.update');
+        });
+    });
+    Route::controller(IngredientController::class)->group(function () {
+        Route::prefix('ingredients')->group(function () {
+            Route::get('/', 'index')->name('admin.ingredients.index');
+            Route::post('/', 'store')->name('admin.ingredients.store');
+            Route::get('/{ingredient}', 'show')->name('admin.ingredients.show');
+            Route::put('/{ingredient}', 'update')->name('admin.ingredients.update');
+            Route::delete('/{ingredient}', 'destroy')->name('admin.ingredients.destroy');
         });
     });
 });

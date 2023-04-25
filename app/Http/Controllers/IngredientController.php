@@ -15,17 +15,8 @@ class IngredientController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $ingredients = Ingredient::with('recipes')->paginate(10);
+        return view('pages.admin.ingredients.index', ['ingredients' => $ingredients]);
     }
 
     /**
@@ -51,17 +42,6 @@ class IngredientController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ingredient  $ingredient
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ingredient $ingredient)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateIngredientRequest  $request
@@ -81,6 +61,7 @@ class IngredientController extends Controller
      */
     public function destroy(Ingredient $ingredient)
     {
-        //
+        $ingredient->delete();
+        return redirect()->back()->with('success', __('Ingredient deleted successfully'));
     }
 }

@@ -97,7 +97,7 @@ class RecipeController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $key => $image) {
-                $image_resized = Image::make($image)->resize(500, 500)->encode('jpg', 80);
+                $image_resized = Image::make($image)->resize(800, 500)->encode('png', 100);
 
                 Storage::disk('public')->put('upload/' . $image->hashName(), $image_resized);
 
@@ -166,7 +166,7 @@ class RecipeController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $key => $image) {
-                $image_resized = Image::make($image)->resize(800, 500)->encode('jpg', 80);
+                $image_resized = Image::make($image)->resize(800, 500)->encode('png', 100);
 
                 Storage::disk('public')->put('upload/' . $image->hashName(), $image_resized);
 
