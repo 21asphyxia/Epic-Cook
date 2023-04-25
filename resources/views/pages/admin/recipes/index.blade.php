@@ -39,7 +39,7 @@
                             <td class="text-center">{{ $recipe->difficulty."/5" }}</td>
                             <td class="text-center">{{ $average }}</td>
                             <td class="text-center">{{ $recipe->user->name }}</td>
-                            <td class="text-center">{{ count($recipe->comments) }}</td>
+                            <td class="text-center"><a href="{{ route('admin.recipe.comments',$recipe)}}">{{ count($recipe->comments) }}</a></td>
                             <td class="text-center">
                                 <form class="d-inline" method="POST"
                                     action="{{ route('admin.recipes.destroy', $recipe) }}">
