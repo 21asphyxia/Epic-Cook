@@ -27,7 +27,9 @@ class IngredientController extends Controller
      */
     public function store(StoreIngredientRequest $request)
     {
-        //
+        $ingredient = Ingredient::make($request->validated());
+        $ingredient->save();
+        return redirect()->back()->with('success', __('Ingredient added successfully'));
     }
 
     /**
@@ -38,7 +40,7 @@ class IngredientController extends Controller
      */
     public function show(Ingredient $ingredient)
     {
-        //
+        return response()->json($ingredient);
     }
 
     /**
@@ -50,7 +52,8 @@ class IngredientController extends Controller
      */
     public function update(UpdateIngredientRequest $request, Ingredient $ingredient)
     {
-        //
+        $ingredient->update($request->validated());
+        return redirect()->back()->with('success', __('Ingredient updated successfully'));
     }
 
     /**

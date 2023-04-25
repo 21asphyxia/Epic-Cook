@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\IngredientController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RecipeController;
 
 
 // Recipes
@@ -31,6 +32,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             Route::get('/{ingredient}', 'show')->name('admin.ingredients.show');
             Route::put('/{ingredient}', 'update')->name('admin.ingredients.update');
             Route::delete('/{ingredient}', 'destroy')->name('admin.ingredients.destroy');
+        });
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::prefix('users')->group(function () {
+            Route::get('/', 'index')->name('admin.users.index');
+            Route::get('/{user}', 'show')->name('admin.users.show');
+            Route::put('/{user}', 'update')->name('admin.users.update');
+            Route::delete('/{user}', 'destroy')->name('admin.users.destroy');
         });
     });
 });

@@ -21,6 +21,12 @@
                 <span>Ingredients</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link @if (!request()->routeIs('admin.users.index')) {{ 'collapsed' }} @endif" href="{{ route('admin.users.index') }}">
+                <i class="fa fa-user"></i>
+                <span>Users</span>
+            </a>
+        </li>
     </ul>
 
 </aside><!-- End Sidebar-->

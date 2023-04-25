@@ -19,7 +19,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::with('ratings', 'comments', 'images', 'user')->orderBy('created_at', 'desc');
+        $recipes = Recipe::with('ratings', 'comments', 'images', 'user')->orderBy('created_at', 'desc')->paginate(5);
         return view('pages.admin.recipes.index', ['recipes' => $recipes]);
     }
 
