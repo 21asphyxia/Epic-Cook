@@ -62,6 +62,11 @@ Route::controller(ImageController::class)->group(function () {
     });
 });
 
-// Route::controller(UserController::class)->group(function () {
-//     Route::post('profile', 'updateProfile')->middleware('auth:api');
-// });
+Route::controller(UserController::class)->group(function () {
+    Route::get('/chefs', 'allChefs')->name('app.chefs');
+    Route::get('/chefs/{user}', 'showChef')->name('app.chefs.show');
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', 'getProfile')->name('app.users.edit');
+        Route::put('/profile', 'updateProfile')->name('app.users.update');
+    });
+});

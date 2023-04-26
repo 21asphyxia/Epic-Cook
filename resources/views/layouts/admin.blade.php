@@ -2,7 +2,7 @@
 
 
 <body>
-    @include('components.nav', ['user' => auth()->user()->name ])
+    @include('components.nav', ['user' => auth()->user() ])
     @include('components.sidebar')
     <main id="main" class="main">
         @yield('content')

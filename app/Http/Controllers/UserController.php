@@ -6,7 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 class UserController extends Controller
 {
@@ -20,83 +23,57 @@ class UserController extends Controller
         return view('pages.admin.users.index');
     }
 
+    public function getProfile() {
+        return view('pages.profile', ['user' => auth()->user()]);
+    }
+
     public function updateProfile(Request $request)
     {
         $user = $request->user();
         Validator::make($request->all(), [
             'name' => 'string|max:255',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
             'email' => [
                 'string',
                 'email',
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
-            ],  
-            'password' => 'nullable|string|min:8|confirmed',
+            ],
         ]);
-
-        if($request->has('password')){
-            $request['password'] = Hash::make($request->password);
-        }
 
         $user->update($request->all());
 
-        return response()->json([
-            "status" => "success",
-            "message" => "Profile updated successfully",
-            "user" => $user], 200);
+        if($request->hasFile('image')) {
+            if($user->image != 'default.jpg'){
+                // dd($user->image);
+                Storage::disk('public')->delete($user->image);
+            }
+            $image = $request->file('image');
+            $image_resized = Image::make($image)->resize(300, 300)->encode('png', 100);
+
+            Storage::disk('public')->put('upload/' . $image->hashName(), $image_resized);
+
+            $name = 'upload/' . $image->hashName();
+
+            $user->image = $name;
+
+            $user->save();
+        }
+
+
+        return redirect()->back()->with('success', __('Profile updated successfully'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function allChefs(){
+        $chefs = User::role('chef')->get();
+        return view('pages.chefs', ['chefs' => $chefs]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
+    public function showChef(User $user){
+        $user = $user->load('recipes');
+        return view('pages.chef', ['chef' => $user]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(User $user)
     {
         $user->delete();

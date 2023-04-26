@@ -10,7 +10,7 @@ use App\Http\Controllers\IngredientController;
 // Recipes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/', function () {
-        return view('pages.admin.dashboard');
+        return redirect()->route('admin.recipes.index');
     })->name('admin.dashboard');
     Route::controller(RecipeController::class)->group(function () {
         Route::prefix('recipes')->group(function () {

@@ -10,18 +10,25 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <ul class="navbar-nav mb-0 mt-2 flex-row flex-wrap justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
+                    <a class="nav-link @if (request()->routeIs('app.home')) {{ 'active' }} @endif
+                    " href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('app.recipes') }}">Recipes</a>
+                    <a class="nav-link @if (request()->routeIs('app.recipes')) {{ 'active' }} @endif
+                    " href="{{ route('app.recipes') }}">Recipes</a>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
+                    <a class="nav-link @if (request()->routeIs('app.chefs') || request()->routeIs('app.chefs.show')) {{ 'active' }} @endif
+                    " href="{{ route('app.chefs') }}">Our Chefs</a>
                 </li>
             </ul>
             @auth
                 <div class="nav-item dropdown d-flex justify-content-center">
+                    
                     <button class="btn rounded-pill btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">{{ $user }}</button>
+                        aria-expanded="false">
+                        <img src="{{ ($user->image == "default.jpg") ? asset('img/profile-img.jpg') : asset('storage/' . str_replace('public', '', $user->image))
+                    }}" alt="Profile" class="profile-pic rounded-circle">
+                        {{ $user->name }}</button>
                     <ul class="dropdown-menu">
                         @role('admin')
                         <li><a class="dropdown-item" href="{{ url('/dashboard') }}">Dashboard</a></li>
@@ -29,7 +36,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('app.users.edit') }}">My Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

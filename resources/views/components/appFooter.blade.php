@@ -1,5 +1,9 @@
-<div class="mt-5">
-    <footer class="text-center text-white">
+@php
+    $route = Route::currentRouteName();
+@endphp
+
+<div class="@if($route != 'login.page' && $route != 'register.page') mt-5 @endif">
+<footer class="text-center text-white">
         <div class="container">
             <hr class="my-5" />
             <section class="text-center">
