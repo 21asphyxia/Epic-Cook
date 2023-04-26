@@ -22,7 +22,7 @@ To create a recipe, simply navigate to the "Create Recipe" page and fill out the
 
 ### Browsing Recipes
 
-To browse recipes, simply navigate to the "Recipes" page. From here, you can search for specific recipes by name, filter by category or cuisine, and sort by popularity or date created. Clicking on a recipe will take you to its individual page, where you can view its ingredients, instructions, and ratings.
+To browse recipes, simply navigate to the "Recipes" page. From here, you can search for specific recipes by name, filter by rating and difficulty. Clicking on a recipe will take you to its individual page, where you can view its ingredients, instructions, and ratings.
 
 ### Rating and Commenting
 
@@ -41,4 +41,4 @@ Admin Guide
 
 The admin dashboard allows you to manage all content on the website. From here, you can add or remove recipes, ingredients, and chefs, as well as edit existing content. You can also view and delete user comments and ratings, and view website statistics such as the number of registered users and the most popular recipes.
 
-To access the admin dashboard, simply log in as an admin user and click on the "Admin" link in the top navigation bar. From here, you will be able to access all of the website's administrative features.
+To access the admin dashboard, simply log in as an admin user and click on the "Dashboard" link in the dropdown menu on the navbar. From here, you will be able to access all of the website's administrative features.
