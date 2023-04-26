@@ -16,12 +16,12 @@
         <div class="form-group mb-1">
             <label for="name">Recipe Name</label>
             <input type="text" name="name" id="name" class="form-control" placeholder="Recipe Name"
-                aria-describedby="helpId" value="{{ old('name') }}">
+                aria-describedby="helpId" value="{{ old('name') }}" required>
         </div>
         <hr>
         <div class="form-group mb-1">
             <label for="description">Recipe Description</label>
-            <textarea class="form-control" name="description" id="description" rows="3">{{ old('description') }}</textarea>
+            <textarea class="form-control" name="description" id="description" rows="3" required>{{ old('description') }}</textarea>
         </div>
         <hr>
         <div class="d-flex justify-content-around">
@@ -29,7 +29,7 @@
                 <label class="align-self-start">Recipe Time</label>
                 <div class="input-group">
                     <input type="number" name="prep_time" id="prep_time" class="form-control w-auto"
-                        placeholder="Prep Time" value="{{ old('prep_time') }}">
+                        placeholder="Prep Time" value="{{ old('prep_time') }}" required>
                     <span class="input-group-text">min</span>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <label class="align-self-start">Recipe Difficulty</label>
                 <div class="d-flex flex-column align-items-center">
                     <input type="range" class="form-range" name="difficulty" id="difficulty" min="1" max="5"
-                        step="1" value="{{ old('difficulty') ?? 1 }}">
+                        step="1" value="{{ old('difficulty') ?? 1 }}" required>
                     <span id="difficulty-filter" class="d-block">1/5</span>
                 </div>
             </div>
@@ -47,9 +47,9 @@
             <label class="align-self-start">Recipe Ingredients</label>
             <div id="ingredient-group" class="input-group flex-nowrap mb-1">
                 <input id="ingredients-quantity" type="number" name="ingredients_amounts[]"
-                    class="input-group-text bg-white" placeholder="Quantity">
+                    class="input-group-text bg-white" placeholder="Quantity" required>
                 <select id="ingredients-units" name="ingredients_units[]" class="form-select form-select-sm  w-auto"
-                    placeholder="Unit">
+                    placeholder="Unit" required>
                     <option value="mg">mg</option>
                     <option value="g">g</option>
                     <option value="kg">kg</option>
@@ -60,7 +60,7 @@
                     <option value="other">other</option>
                 </select>
                 <select id="ingredients-select-1" name="ingredients[]" class="form-select form-select-sm ingredient-select"
-                    placeholder="Ingredient">
+                    placeholder="Ingredient" required>
                     @foreach ($ingredients as $ingredient)
                         <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
                     @endforeach
@@ -72,7 +72,7 @@
         <hr>
         <div class="form-group d-flex flex-column align-items-center mb-1">
             <label class="align-self-start">Recipe Instructions</label>
-            <input type="text" class="form-control mb-1" name="instructions[]" id="instructions"></input>
+            <input type="text" class="form-control mb-1" name="instructions[]" id="instructions" required></input>
             <button id="add-instruction" class="btn btn-primary rounded-pill" type="button"><i
                     class="bi bi-plus"></i></button>
         </div>
@@ -80,7 +80,7 @@
         <div class="form-group">
             <label for="image">Recipe Image</label>
             <input type="file" multiple class="form-control" name="images[]" id="image" placeholder=""
-                aria-describedby="fileHelpId">
+                aria-describedby="fileHelpId" required accept="image/*">
         </div>
         <hr>
         <button type="submit" class="btn btn-primary">Submit</button>

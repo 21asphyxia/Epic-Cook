@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Style+Script&display=swap');
 html {
     font-size: 20px;
 }
 
-
-
 body {
     font-family: 'Caveat', cursive;
+    background-color: #F5F3F0;
 }
 
 ul {
@@ -378,4 +376,8 @@ div>nav>.pagination {
     border: none;
     border-radius: 5px;
     box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  }
+
+  .comment-text {
+    padding-left: 2rem;
   }

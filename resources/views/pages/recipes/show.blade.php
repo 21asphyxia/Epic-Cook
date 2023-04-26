@@ -86,7 +86,9 @@
                             $i = 0;
                         @endphp
                         @foreach ($recipe->images as $image)
-                            <button type="button" data-bs-target="#carouselExampleIndicators" @if($i == 0) class="active" @endif data-bs-slide-to="{{ $i++ }}"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators"
+                                @if ($i == 0) class="active" @endif
+                                data-bs-slide-to="{{ $i++ }}"></button>
                         @endforeach
                     </div>
                     <div class="carousel-inner">
@@ -94,21 +96,24 @@
                             $j = 0;
                         @endphp
                         @foreach ($recipe->images as $image)
-                            <div class="carousel-item @if($j++ == 0) active @endif">
+                            <div class="carousel-item @if ($j++ == 0) active @endif">
                                 <img src="@if ($image->path == 'public/img/card.jpg') {{ asset('img/card.jpg') }}
-                                @else {{ asset('storage/' . str_replace('public', '', $image->path)) }} @endif" class="d-block w-100" alt="...">
+                                @else {{ asset('storage/' . str_replace('public', '', $image->path)) }} @endif"
+                                    class="d-block w-100" alt="...">
                             </div>
-                            @endforeach
+                        @endforeach
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Previous</span>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Next</span>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
                     </button>
-                  </div>
+                </div>
                 {{-- <div class="owl-carousel owl-theme">
                     @foreach ($recipe->images as $image)
                         <div class="item">
@@ -220,16 +225,35 @@
                 </ul>
                 <hr>
                 <div class="d-flex justify-content-center">
-
-                    <a href="{{ route('app.recipes.edit', $recipe) }}" class="btn btn-primary me-2">Edit</a>
-                    <form action="{{ route('app.recipes.destroy', $recipe) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    @auth
+                        @php
+                            $editable =
+                                auth()
+                                    ->user()
+                                    ->can('update own recipes') && $recipe->user()->is(auth()->user());
+                            $deletable =
+                                auth()
+                                    ->user()
+                                    ->can('delete all recipes') ||
+                                (auth()
+                                    ->user()
+                                    ->can('delete own recipes') &&
+                                    $recipe->user()->is(auth()->user()));
+                        @endphp
+                    @endauth
+                    @if ($editable)
+                        <a href="{{ route('app.recipes.edit', $recipe) }}" class="btn btn-primary me-2">Edit</a>
+                    @endif
+                    @if ($deletable)
+                        <form action="{{ route('app.recipes.destroy', $recipe) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    @endif
                 </div>
             </div>
-            <div class="inner-column">
+            <div class="inner-column d-flex flex-column align-items-center">
                 <h2>Rate this recipe :</h2>
                 @php
                     $rating = $recipe->ratings->where('user_id', Auth::id())->first();
@@ -312,11 +336,7 @@
                                 $editable =
                                     auth()
                                         ->user()
-                                        ->can('update all comments') ||
-                                    (auth()
-                                        ->user()
-                                        ->can('update own comments') &&
-                                        $comment->user()->is(auth()->user()));
+                                        ->can('update own comments') && $comment->user()->is(auth()->user());
                                 $deletable =
                                     auth()
                                         ->user()
@@ -336,6 +356,8 @@
                             @endauth
                             <div class="comment-header ps-1">
                                 <div class="comment-author">
+                                    <img src="{{ ($comment->user->image == "default.jpg") ? asset('img/profile-img.jpg') : asset('storage/' . str_replace('public', '', $user->image))
+                                }}" alt="" class="rounded-circle" width="32">
                                     <strong>{{ $comment->user->name }}</strong>
                                     <span
                                         class="comment-date text-secondary d-none d-sm-inline">{{ $comment->created_at->toDayDateTimeString() }}
@@ -357,7 +379,7 @@
                                 </div>
                             </div>
                             <div class="comment-body">
-                                <p class="comment-text ps-3 m-0">{{ $comment->content }}</p>
+                                <p class="comment-text m-0">{{ $comment->content }}</p>
                             </div>
                             @auth
                                 @if ($editable || $deletable)

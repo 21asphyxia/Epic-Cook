@@ -8,6 +8,15 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="col-xl-4">
 
                 <div class="card mb-3">
@@ -115,8 +124,9 @@
 
                             <div class="tab-pane fade pt-3" id="profile-change-password" role="tabpanel">
                                 <!-- Change Password Form -->
-                                <form>
-    
+                                <form action="{{ route('edit.password') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
                                     <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                             Password</label>
@@ -129,7 +139,7 @@
                                         <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="newpassword" type="password" class="form-control" id="newPassword">
+                                            <input name="newPassword" type="password" class="form-control" id="newPassword">
                                         </div>
                                     </div>
     
@@ -137,7 +147,7 @@
                                         <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="renewpassword" type="password" class="form-control"
+                                            <input name="renewPassword" type="password" class="form-control"
                                                 id="renewPassword">
                                         </div>
                                     </div>

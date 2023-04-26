@@ -58,7 +58,7 @@
                     <input type="hidden" name="id" id="ingredientId">
                     <div class="mb-3">
                         <input type="text" name="name" class="form-control" id="ingredientName"
-                            placeholder="Ingredient Name">
+                            placeholder="Ingredient Name" required>
                     </div>
                 </div>
                 <div class="modal-footer">

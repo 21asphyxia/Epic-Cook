@@ -30,7 +30,6 @@
                             if (count($recipe->ratings) == 0) {
                                 $average = 0;
                             } else {
-                                // $average = round($recipe->ratings->sum('rating_number') / count($recipe->ratings), 1
                                 $ratings = $recipe->ratings->pluck('rating_number')->toArray();
                                 $average = round(array_sum($ratings) / count($ratings), 1);
                             }
