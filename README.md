@@ -1,66 +1,44 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Recipe Sharing Website
+======================
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This website allows users to share and discover new recipes. Users can create and share their own recipes, as well as browse and rate recipes created by other users. The website also features a list of popular recipes and the latest recipes created by users.
 
-## About Laravel
+Features
+--------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   Create new recipes with available ingredients or create new ingredients
+-   Browse and search for recipes created by other users
+-   Rate and comment on recipes
+-   View popular and latest recipes
+-   View chefs of the website and their recipes
+-   Admin dashboard to manage all content
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+User Guide
+----------
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Creating a Recipe
 
-## Learning Laravel
+To create a recipe, simply navigate to the "Create Recipe" page and fill out the required fields. You can select ingredients from a list of available options, or create new ingredients if they are not available. Once you have added all of the necessary information, click "Submit" to create your recipe.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Browsing Recipes
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+To browse recipes, simply navigate to the "Recipes" page. From here, you can search for specific recipes by name, filter by category or cuisine, and sort by popularity or date created. Clicking on a recipe will take you to its individual page, where you can view its ingredients, instructions, and ratings.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Rating and Commenting
 
-## Laravel Sponsors
+To rate and comment on a recipe, simply navigate to its individual page and click on the "Rate and Comment" section. Here, you can leave a rating out of 5 stars and add a comment about your experience making the recipe.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Popular and Latest Recipes
 
-### Premium Partners
+The website features a list of popular recipes, which are the recipes with the highest overall ratings. The latest recipes are the most recently created recipes on the website. Both of these lists can be found on the "Home" page.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Chefs of the Website
 
-## Contributing
+To view the chefs of the website and their recipes, navigate to the "Chefs" page. Here, you can browse chefs by name and view their individual pages to see their recipes, ratings, and comments.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Admin Guide
+-----------
 
-## Code of Conduct
+The admin dashboard allows you to manage all content on the website. From here, you can add or remove recipes, ingredients, and chefs, as well as edit existing content. You can also view and delete user comments and ratings, and view website statistics such as the number of registered users and the most popular recipes.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+To access the admin dashboard, simply log in as an admin user and click on the "Admin" link in the top navigation bar. From here, you will be able to access all of the website's administrative features.
