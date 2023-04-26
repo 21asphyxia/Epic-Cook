@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
+
         
         $this->call([
             RecipeSeeder::class,
             RolesPermissionsSeeder::class,
         ]);
+        
+        foreach (\App\Models\User::all() as $user) {
+            $user->assignRole('user');
+        }
         
         \App\Models\User::create([
             'name' => 'Admin',

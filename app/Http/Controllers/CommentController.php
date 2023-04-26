@@ -16,7 +16,7 @@ class CommentController extends Controller
      */
     public function index(Recipe $recipe)
     {
-        $comments = $recipe->comments()->get();
+        $comments = $recipe->comments()->paginate(5);
         return view('pages.admin.comments.index', ['comments' => $comments]);
     }
 

@@ -23,7 +23,6 @@
                 <tbody>
                     @foreach ($comments as $comment)
                         <tr>
-                        {{-- {{ dd($comment) }} --}}
                             <td class="text-center">{{ $comment->user->name }}</td>
                             <td class="text-center">{{ $comment->content }}</td>
                             <td class="text-center">{{ $comment->created_at->toDayDateTimeString() }}</td>
@@ -38,9 +37,9 @@
                             </td>
                         </tr>
                     @endforeach
-
                 </tbody>    
             </table>
         </div>
     </div>
+    {{ $comments->links() }}
 @endsection

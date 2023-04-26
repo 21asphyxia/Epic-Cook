@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.admin.users.index');
     }
 
     public function updateProfile(Request $request)
@@ -99,6 +99,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        
+        return redirect()->back()->with('success', __('User deleted successfully'));
     }
 }

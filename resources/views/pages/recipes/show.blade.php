@@ -152,7 +152,15 @@
                     <li>
                         <span class="icon fa fa-user"></span>
                         <strong>Author</strong>
-                        <p class="ps-3">{{ $recipe->user->name }}</p>
+                        <p class="ps-3">
+                            @if ($recipe->user)
+                                {{ $recipe->user->name }}
+                            @else
+                                <i>
+                                    Deleted User
+                                </i>
+                            @endif
+                        </p>
                     </li>
                     <li>
                         <span class="icon fa fa-clock"></span>
@@ -291,6 +299,13 @@
                 <h3>Comments :</h3>
                 <hr>
                 <div class="row flex-column gy-1 mb-3">
+                    {{-- @php
+                        foreach ($recipe->comments as $comment) {
+                            echo "<pre>";
+                            echo $comment->user;
+                        }
+                        die;
+                    @endphp --}}
                     @foreach ($comments as $comment)
                         @auth
                             @php

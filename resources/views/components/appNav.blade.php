@@ -23,7 +23,9 @@
                     <button class="btn rounded-pill btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">{{ $user }}</button>
                     <ul class="dropdown-menu">
+                        @role('admin')
                         <li><a class="dropdown-item" href="{{ url('/dashboard') }}">Dashboard</a></li>
+                        @endrole
                         <li>
                             <hr class="dropdown-divider">
                         </li>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('step')->nullable(false)->default(1);
             $table->string('description')->nullable(false);
-            $table->integer('recipe_id')->constrained('recipes')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('recipe_id')->references('id')->on('recipes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
